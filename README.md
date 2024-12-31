@@ -4,19 +4,18 @@ At each step, an input file is read and output file is generated, which then act
 Files required:
 	pv_db.ini: config file containing the PV DB conn details for stage 2
 
-Step1. Download data from Biogrid and extract human related interactions and format header.
+## Step1. Download data from Biogrid and extract human related interactions and format header.
 # comment: output file created named "biogrid_human_interactions.txt" which has no spaces in header
-# script: 
     ./biogrid_fetch_hformat.sh 
 
-Step 2. BG data processing (Stage 1): Read step 1 output file, and extract uniprot and refseq ids as fields/columns
+## Step 2. BG data processing (Stage 1): Read step 1 output file, and extract uniprot and refseq ids as fields/columns
 # script: 
     ./biogrid_processing.py -s1 
         -i /home/pub/Work/data_arise_proteome/protvar/biogrid/biogrid_human_interactions.txt
         -o /home/pub/Work/data_arise_proteome/protvar/biogrid/updated_bg_human_interactions.tsv
         --verbose
 
-Step 3. BG data processing (Stage 2): Read step 2 output file, and get the missing ids uniprot ids from ProtVar Database      
+## Step 3. BG data processing (Stage 2): Read step 2 output file, and get the missing ids uniprot ids from ProtVar Database      
 # script: 
     ./biogrid_processing.py -s2 
         -i /home/pub/Work/data_arise_proteome/protvar/biogrid/updated_bg_human_interactions.tsv 
