@@ -68,15 +68,14 @@ Files required:
 
 ### Step 1) Concatenate files: Files 2 and 3
 
+![supp_af2_receieved](https://github.com/user-attachments/assets/e798a598-dd3d-4d46-a1b6-e20a080bcc2b)
+
 Generate an updated suppl_ppi file which includes the missing af2 entries.
 
 Required Data:
 
 `af2_iptm_pdockq.tsv`: data containing 103969 entries that were previously missing
 `suppl_ppi_models_.tsv`: file from PV
-
-![supp_af2_receieved](https://github.com/user-attachments/assets/e798a598-dd3d-4d46-a1b6-e20a080bcc2b)
-
 
 **Note** `--input_file_list` must be a textfile listing files to concatenate/merge. For this step, the list must be the two files mentioned above. DO NOT provide '--common_col' command-line argument.
 
@@ -96,6 +95,7 @@ Example:
 *ELAPSED TIME: 4.60 seconds*
 
 ### Step 2) Merge files on "interaction_id": (Files 2 and 3) and File 1
+![af2_updated_suppl](https://github.com/user-attachments/assets/4116549a-4085-48be-beed-048b381c4363)
 
 Note that, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
 
