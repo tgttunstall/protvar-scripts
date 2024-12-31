@@ -13,7 +13,7 @@ import pprint as pp
 import matplotlib.pyplot as plt
 from matplotlib_venn import venn2
 from matplotlib_venn import venn3
-import pandas as pd
+#import pandas as pd
 from collections import defaultdict, Counter
 import time
 import csv
