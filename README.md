@@ -108,6 +108,7 @@ Note that, as above, `--input_file_list` must be a file containing a list of fil
 		These two files, one on each line == INPUT for script 
 ```
 ./pv_data_merging.py --input_file_list /home/pub/Work/data_arise_proteome/protvar/input_files_updatedAF2_biogrid.txt --common_col interaction_id --outfile /home/pub/Work/data_arise_proteome/protvar/output/af2_suppl_ppi_biogrid_combined.tsv --verbose 
-==> ELAPSED TIME: 32.69 seconds.
 ```
+==> ELAPSED TIME: 32.69 seconds.
+
 
