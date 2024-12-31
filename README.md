@@ -3,11 +3,11 @@
 At each step, an input file is read and output file is generated, which then acts as the input for the next stage. All paths must be changed to whatever your system is using. Fully-qualified paths are preferred.
 
 
-## Step 1. Download data from Biogrid and extract human related interactions and format header.
+### Step 1. Download data from Biogrid and extract human related interactions and format header.
 Comment: output file created named "biogrid_human_interactions.txt" which has no spaces in header
     ./biogrid_fetch_hformat.sh 
 
-## Step 2. BG data processing (Stage 1)
+### Step 2. BG data processing (Stage 1)
 
 Read step 1 output file, and extract uniprot and refseq ids as fields/columns
 
@@ -22,20 +22,17 @@ pv_db.ini: config file containing the PV DB conn details for stage 2
         --verbose
 ```
 
-## Step 3. BG data processing (Stage 2)
-
+### Step 3. BG data processing (Stage 2)
 Read step 2 output file, and get the missing ids uniprot ids from ProtVar Database      
-
 ```
 ./biogrid_processing.py -s2 \
         -i /home/pub/Work/data_arise_proteome/protvar/biogrid/updated_bg_human_interactions.tsv \
         -o /home/pub/Work/data_arise_proteome/protvar/biogrid/updated_bg_human_interactions_PVDB.tsv \
       	--verbose
-==> Stage 2 completed in 321.92 seconds   	
 ```
+==> Stage 2 completed in 321.92 seconds   	
 
-## Step 4. BG data processing (Stage 3)
-
+### Step 4. BG data processing (Stage 3)
 Read step 3 output file, and perform "merging of column values" for a given interaction id, since biogrid data has 1:many relationship for a given interaction_id.
 
 ```
@@ -43,9 +40,8 @@ Read step 3 output file, and perform "merging of column values" for a given inte
         -i /home/pub/Work/data_arise_proteome/protvar/biogrid/updated_bg_human_interactions_PVDB.tsv \
         -o /home/pub/Work/data_arise_proteome/protvar/biogrid/updated_bg_source.tsv \
         --verbose
-
-==> Stage 3 completed in 28.50 seconds
 ```
+==> Stage 3 completed in 28.50 seconds
 
 # AF2, SUPPL_PPI, BG DATA Merging: 
 '''pv_data_merging.py''' is a script that takes as input file listing the filenames to merge.
