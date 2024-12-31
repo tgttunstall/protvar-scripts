@@ -1,4 +1,7 @@
 # PV-BIOGRID EVIDENCE MAPPING
+## Requirements:
+Should run with standard python packages. 
+Required matplotlib and matplotlib-venn for the venn diagrams.
 
 Combine files
 1. *Required, must exist*: af2-models-split-ifresid_.tsv: 310582 rows, pdockq scores but no iptm scores
