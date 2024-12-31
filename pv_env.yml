@@ -1,0 +1,25 @@
+name: pv
+channels:
+  - conda-forge
+  - bioconda
+#  - defaults
+dependencies:
+  - python>3.9
+  - pip
+  - spyder
+  - pip:
+    - pandas
+    - scikit-learn
+    - numpy
+    - scipy
+    - matplotlib
+    - matplotlib_venn
+    - seaborn
+    - networkx[all]
+    - tqdm
+    - h5py #24 june 2024
+    - psycopg2
+    - SQLAlchemy # 8 August
+# Note: collections and counter are part of Python's standard library
+# Ensure any additional packages not available through conda are listed here
+# pprint, time, random, csv, re, sys, os, time, collection, counter: part of Python's standard library
