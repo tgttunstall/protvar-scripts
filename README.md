@@ -118,4 +118,5 @@ Note that, as above, `--input_file_list` must be a file containing a list of fil
 ```
 *ELAPSED TIME: 32.69 seconds*
 
+![af2_bg_combined](https://github.com/user-attachments/assets/bb1fd45f-1a17-4c67-8299-eb4d1aab0b27)
 
