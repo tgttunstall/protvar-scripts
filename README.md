@@ -18,7 +18,6 @@ Comment: output file created named "biogrid_human_interactions.txt" which has no
 *Stage 1 completed in 32 seconds*
 
 ### Step 2. BG data processing (Stage 1)
-
 Read step 1 output file, and extract uniprot and refseq ids as fields/columns
 
 ```
