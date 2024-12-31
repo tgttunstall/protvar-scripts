@@ -12,7 +12,9 @@ All paths must be changed to whatever your system is using. Fully-qualified path
 
 ### Step 1. Download data from Biogrid and extract human related interactions and format header.
 Comment: output file created named "biogrid_human_interactions.txt" which has no spaces in header
-    ./biogrid_fetch_hformat.sh 
+```
+./biogrid_fetch_hformat.sh
+```
 
 ### Step 2. BG data processing (Stage 1)
 
