@@ -5,7 +5,7 @@ Files required:
 	pv_db.ini: config file containing the PV DB conn details for stage 2
 
 ## Step1. Download data from Biogrid and extract human related interactions and format header.
-# comment: output file created named "biogrid_human_interactions.txt" which has no spaces in header
+Comment: output file created named "biogrid_human_interactions.txt" which has no spaces in header
     ./biogrid_fetch_hformat.sh 
 
 ## Step 2. BG data processing (Stage 1): Read step 1 output file, and extract uniprot and refseq ids as fields/columns
