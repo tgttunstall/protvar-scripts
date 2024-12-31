@@ -18,12 +18,6 @@ Comment: output file created named "biogrid_human_interactions.txt" which has no
 
 Read step 1 output file, and extract uniprot and refseq ids as fields/columns
 
-Files required:
-
-*pv_db.ini*: config file containing the PV DB conn details for stage 2
-
-**NOTE**: Connection to the DB is required for this stage to work
-
 ```
 ./biogrid_processing.py -s1 \
         -i /home/pub/Work/data_arise_proteome/protvar/biogrid/biogrid_human_interactions.txt \
@@ -32,7 +26,14 @@ Files required:
 ```
 
 ### Step 3. BG data processing (Stage 2)
-Read step 2 output file, and get the missing ids uniprot ids from ProtVar Database      
+Read step 2 output file, and get the missing ids uniprot ids from ProtVar Database
+
+Files required:
+
+*pv_db.ini*: config file containing the PV DB conn details for stage 2
+
+**NOTE**: Connection to the DB is required for this stage to work
+
 ```
 ./biogrid_processing.py -s2 \
         -i /home/pub/Work/data_arise_proteome/protvar/biogrid/updated_bg_human_interactions.tsv \
