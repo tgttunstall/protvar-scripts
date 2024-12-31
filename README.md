@@ -15,7 +15,7 @@ Comment: output file created named "biogrid_human_interactions.txt" which has no
 ```
 ./biogrid_fetch_hformat.sh
 ```
-Stage 1 completed in 32 seconds
+*Stage 1 completed in 32 seconds*
 
 ### Step 2. BG data processing (Stage 1)
 
