@@ -1,6 +1,6 @@
 # BIOGRID DATA PROCESSING: 
 
-At each step, an input file is read and output file is generated, which then acts as the input for the next stage.
+At each step, an input file is read and output file is generated, which then acts as the input for the next stage. All paths must be changed to whatever your system is using. Fully-qualified paths are preferred.
 
 
 ## Step 1. Download data from Biogrid and extract human related interactions and format header.
@@ -65,18 +65,35 @@ GOAL: Combine files
 	4. updated_bg_source.tsv: 976325 entries of human interactions (final output from stage 3 of Biogrid data processing
 
 ## Step 1) Concatenate files: Files 2 and 3
-	# Generate an updated suppl_ppi file which includes the missing af2 entries.
-		## af2_iptm_pdockq.tsv: data received from David which are 103969 entries that were previously missing
-		## suppl_ppi_models_.tsv: file from PV
-		These two files, one on each line == INPUT for script 
-		Output: 590069 rows
-DO NOT provide '--common_col' cmd arg so it does a simple concatenate
+
+Generate an updated suppl_ppi file which includes the missing af2 entries.
+
+Required Data:
+
+`af2_iptm_pdockq.tsv`: data containing 103969 entries that were previously missing
+`suppl_ppi_models_.tsv`: file from PV
+
+Note that `--input_file_list` must be a textfile listing files to concatenate/merge. For this step, the list must be the two files mentioned above. DO NOT provide '--common_col' command-line argument.
+
+Example:
+
+```
+/home/pub/Work/data_arise_proteome/protvar/suppl_ppi_models_.tsv
+/home/pub/Work/data_arise_proteome/protvar/af2_iptm_pdockq.tsv
+```
+
+Running the script.
+
+Example:
 ```
 ./pv_data_merging.py --input_file_list /home/pub/Work/data_arise_proteome/protvar/input_files_suppl_mAF2.txt --outfile /home/pub/Work/data_arise_proteome/protvar/output/updated_suppl_ppi.tsv --verbose 
 ==> ELAPSED TIME: 4.60 seconds.
 ```
 
 ## Step 2) Merge files on "interaction_id": (Files 2 and 3) and File 1
+
+Note that, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
+
 		## af2-models-split-ifresid_.tsv: file from PV
 		## updated_suppl_ppi.tsv: output of Step 1
 		These two files, one on each line == INPUT for script 
@@ -88,7 +105,10 @@ DO NOT provide '--common_col' cmd arg so it does a simple concatenate
 #==> ELAPSED TIME: 62.67 seconds.
 
 ## Step 3) FINAL MERGE:  Merge files on "interaction_id": (Files 2 and 3 and 1) and File 4
-		## af2_suppl_ppi_combined: output of Step 2
+
+Note that, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
+
+        ## af2_suppl_ppi_combined: output of Step 2
 		## updated_bg_source.tsv: output stage 3 of biogrid processing (biogrid_processing.py -s3)
 		These two files, one on each line == INPUT for script 
 ```

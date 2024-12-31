@@ -55,11 +55,11 @@ def run_stage1(input_file, output_file, verbose):
     write_list_of_dicts_to_tsv(updated_data_list, output_file)
     
     if verbose:
-        print(f"Input file:{input_file}")
-        print(f"Output file:{output_file}")
+        print(f"Input file: {input_file}")
+        print(f"Output file: {output_file}")
 
         elapsed = time.time() - start_time
-        print(f"Stage 1 completed in {elapsed:.2f} seconds. Data is processed and written to {output_file}")
+        print(f"Stage 1 completed in {elapsed:.2f} seconds. \nData is processed and written to {output_file}")
 
 def run_stage2(input_file, output_file, config_path, verbose):
     print("Starting Stage 2: Fetching missing UniProt IDs")
@@ -73,8 +73,8 @@ def run_stage2(input_file, output_file, config_path, verbose):
     # OPTIONAL: you can also write out the tracking dict for debug
 
     if verbose:
-        print(f"Input file:{input_file}")
-        print(f"Output file:{output_file}")
+        print(f"Input file: {input_file}")
+        print(f"Output file: {output_file}")
         elapsed = time.time() - start_time
         print(f"Stage 2 completed in {elapsed:.2f} seconds. Data is updated and written to {output_file}")
 
@@ -97,8 +97,8 @@ def run_stage3(input_file, output_file, verbose):
                       output_file = output_file,
                       output_to_file = True)
     if verbose:
-        print(f"Input file:{input_file}")
-        print(f"Output file:{output_file}")
+        print(f"Input file: {input_file}")
+        print(f"Output file: {output_file}")
         print(f"Using the following columns to merge values: {cols_for_value_merge}")
         elapsed = time.time() - start_time
         print(f"Stage 3 completed in {elapsed:.2f} seconds. \nMerged data is written to {output_file}")
