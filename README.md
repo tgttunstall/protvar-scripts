@@ -1,7 +1,14 @@
-# BIOGRID DATA PROCESSING: 
+# PV-BIOGRID EVIDENCE MAPPING
 
-At each step, an input file is read and output file is generated, which then acts as the input for the next stage. All paths must be changed to whatever your system is using. Fully-qualified paths are preferred.
+Combine files
+1. af2-models-split-ifresid_.tsv: 310582 rows, pdockq scores but no iptm
+2. af2_iptm_pdockq.tsv: 103969 entries from the AF2 file ^^
+3. suppl_ppi_models_.tsv: 486100 entries
+4. updated_bg_source.tsv: 976325 entries of human interactions (final output from stage 3 of Biogrid data processing)
 
+## BIOGRID DATA PROCESSING: 
+At each step, an input file is read and output file is generated, which then acts as the input for the next stage.
+All paths must be changed to whatever your system is using. Fully-qualified paths are preferred.
 
 ### Step 1. Download data from Biogrid and extract human related interactions and format header.
 Comment: output file created named "biogrid_human_interactions.txt" which has no spaces in header
