@@ -20,7 +20,7 @@ Read step 1 output file, and extract uniprot and refseq ids as fields/columns
 
 Files required:
 
-pv_db.ini: config file containing the PV DB conn details for stage 2
+*pv_db.ini*: config file containing the PV DB conn details for stage 2
 
 ```
 ./biogrid_processing.py -s1 \
@@ -50,7 +50,7 @@ Read step 3 output file, and perform "merging of column values" for a given inte
 ```
 ==> Stage 3 completed in 28.50 seconds
 
-# AF2, SUPPL_PPI, BG DATA Merging: 
+## AF2, SUPPL_PPI, BG DATA Merging: 
 '''pv_data_merging.py''' is a script that takes as input file listing the filenames to merge.
 Output file is generated which is used in the subsequent steps before finally generating a tsv 
 file which contains biogrid data mapped to af2 and suppl_ppi data
