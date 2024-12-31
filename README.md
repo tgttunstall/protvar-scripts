@@ -45,8 +45,8 @@ Read step 3 output file, and perform "merging of column values" for a given inte
 
 # AF2, SUPPL_PPI, BG DATA Merging: 
 '''pv_data_merging.py''' is a script that takes as input file listing the filenames to merge.
-output file is generated which is used in  the subsequent steps before final generating a tsv 
-file which is biogrid data mapped to af2 and suppl_ppi data
+Output file is generated which is used in the subsequent steps before finally generating a tsv 
+file which contains biogrid data mapped to af2 and suppl_ppi data
 
 Files required:
 
