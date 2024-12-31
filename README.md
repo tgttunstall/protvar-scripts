@@ -35,8 +35,14 @@ since biogrid data has 1:many relationship for a given interaction_id.
 ##########################
 # AF2, SUPPL_PPI, BG DATA Merging: 
 pv_data_merging.py is a script that takes as input file listing the filenames to merge.
-output file is generated, wh
+output file is generated which is used in  the subsequent steps before final generating a tsv 
+file which is biogrid data mapped to af2 and suppl_ppi data
 ##########################
+Files required:
+suppl_ppi_models_.tsv
+af2-models-split-ifresid_.tsv
+af2_iptm_pdockq.tsv
+
 MISSION: Combine files
 	1. af2-models-split-ifresid_.tsv: 310582 rows, pdockq scores but no iptm
 	2. af2_iptm_pdockq.tsv: 103969 entries from the AF2 file ^^ that David provdied pdockq and iptm scores for.
