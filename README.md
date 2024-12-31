@@ -21,6 +21,7 @@ Read step 1 output file, and extract uniprot and refseq ids as fields/columns
 Files required:
 
 *pv_db.ini*: config file containing the PV DB conn details for stage 2
+
 **NOTE**: Connection to the DB is required for this stage to work
 
 ```
