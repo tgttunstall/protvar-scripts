@@ -1,9 +1,8 @@
-##########################
-# BIOGRID DATA PROCESSING: At each step, an input file is read and
-# output file is generated, which then acts as the input for the next stage.
-# Files requred:
-# pv_db.ini: config file containing the PV DB conn details for stage 2
-##########################
+# BIOGRID DATA PROCESSING: 
+
+At each step, an input file is read and output file is generated, which then acts as the input for the next stage.
+Files required:
+	pv_db.ini: config file containing the PV DB conn details for stage 2
 
 Step1. Download data from Biogrid and extract human related interactions and format header.
 # comment: output file created named "biogrid_human_interactions.txt" which has no spaces in header
