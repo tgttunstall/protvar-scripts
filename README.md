@@ -12,10 +12,7 @@ Install necessary python modules
 pip3 install matplotlib matplotlib_venn psycopg2-binary
 
 ## Requirements:
-Should run with standard python packages. 
-Required matplotlib and matplotlib-venn for the venn diagrams.
 
-Combine files
 1. *Required, must exist*: af2-models-split-ifresid_.tsv: 310582 rows, pdockq scores but no iptm scores
 2. *Required, must exist*: af2_iptm_pdockq.tsv: 103969 entries from the AF2 file with pdockq scores and iptm scores
 3. *Required, must exist*: suppl_ppi_models_.tsv: 486100 entries
