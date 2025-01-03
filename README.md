@@ -1,15 +1,15 @@
 # PV-BIOGRID EVIDENCE MAPPING
 ## Python virtual env
 
-python3 -m venv pv
+	python3 -m venv pv
 
-source pv/bin/env
+	source pv/bin/env
 
-export DATA_DIR=<PATH_TO_DATA DIR>
+	export DATA_DIR=<PATH_TO_DATA DIR>
 
 Install necessary python modules
 
-pip3 install matplotlib matplotlib_venn psycopg2-binary
+	pip3 install matplotlib matplotlib_venn psycopg2-binary
 
 ## Requirements:
 
