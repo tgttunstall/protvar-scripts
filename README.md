@@ -1,5 +1,9 @@
-<<<<<<< HEAD
 # PV-BIOGRID EVIDENCE MAPPING
+## Python virtual env
+
+python3 -m venv pv
+source pv/bin/env
+
 ## Requirements:
 Should run with standard python packages. 
 Required matplotlib and matplotlib-venn for the venn diagrams.
@@ -14,20 +18,7 @@ Combine files
 At each step, an input file is read and output file is generated, which then acts as the input for the next stage.
 All paths must be changed to whatever your system is using. Fully-qualified paths are preferred.
 
-### Step 1. Download data from Biogrid and extract human related interactions and format header.
-=======
-# Python virtual env
-
-python3 -m venv pv
-source pv/bin/env
-
-# BIOGRID DATA PROCESSING: 
-
-At each step, an input file is read and output file is generated, which then acts as the input for the next stage. All paths must be changed to whatever your system is using. Fully-qualified paths are preferred.
-
-
 ## Step 1. Download data from Biogrid and extract human related interactions and format header.
->>>>>>> 79db690 (updated readme with python virtual env)
 Comment: output file created named "biogrid_human_interactions.txt" which has no spaces in header
 ```
 ./biogrid_fetch_hformat.sh
