@@ -3,7 +3,7 @@
 
 python3 -m venv pv
 source pv/bin/env
-export DATA_DIR=<PATH TO DATA DIR>
+export DATA_DIR = <PATH TO DATA DIR>
 
 Install necessary python modules
 
