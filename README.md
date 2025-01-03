@@ -3,6 +3,11 @@
 
 python3 -m venv pv
 source pv/bin/env
+export DATA_DIR=<PATH TO DATA DIR>
+
+Install necessary python modules
+
+pip3 install matplotlib matplotlib_venn psycopg2-binary
 
 ## Requirements:
 Should run with standard python packages. 
@@ -16,38 +21,39 @@ Combine files
 
 ## BIOGRID DATA PROCESSING: 
 At each step, an input file is read and output file is generated, which then acts as the input for the next stage.
-All paths must be changed to whatever your system is using. Fully-qualified paths are preferred.
+All paths must be changed to whatever your system is using. Fully-qualified paths are preferred. If you are copy/paste-ing the examples from this README, ensure you set DATA_DIR appropriately!
 
 ## Step 1. Download data from Biogrid and extract human related interactions and format header.
 Comment: output file created named "biogrid_human_interactions.txt" which has no spaces in header
 ```
 ./biogrid_fetch_hformat.sh
 ```
-*Stage 1 completed in 32 seconds*
 
 ### Step 2. BG data processing (Stage 1)
 Read step 1 output file, and extract uniprot and refseq ids as fields/columns
 
 ```
 ./biogrid_processing.py -s1 \
-        -i /home/pub/Work/data_arise_proteome/protvar/biogrid/biogrid_human_interactions.txt \
-        -o /home/pub/Work/data_arise_proteome/protvar/biogrid/updated_bg_human_interactions.tsv \
+        -i $DATA_DIR/biogrid_human_interactions.txt \
+        -o $DATA_DIR/updated_bg_human_interactions.tsv \
         --verbose
 ```
+*Stage 1 completed in 32 seconds*
 
 ### Step 3. BG data processing (Stage 2)
 Read step 2 output file, and get the missing ids uniprot ids from ProtVar Database
 
 Files required:
 
-*pv_db.ini*: config file containing the PV DB conn details for stage 2
+*pv_db.ini*: config file containing the PV DB conn details for stage 2. This can be either specified on the command line with `--config-file` or loaded from the current directory by default.
 
 **NOTE**: Connection to the DB is required for this stage to work
 
 ```
 ./biogrid_processing.py -s2 \
-        -i /home/pub/Work/data_arise_proteome/protvar/biogrid/updated_bg_human_interactions.tsv \
-        -o /home/pub/Work/data_arise_proteome/protvar/biogrid/updated_bg_human_interactions_PVDB.tsv \
+        --config-file ../pv_db.ini
+        -i $DATA_DIR/updated_bg_human_interactions.tsv \
+        -o $DATA_DIR/updated_bg_human_interactions_PVDB.tsv \
       	--verbose
 ```
 *Stage 2 completed in 321.92 seconds*
@@ -57,8 +63,8 @@ Read step 3 output file, and perform "merging of column values" for a given inte
 
 ```
     ./biogrid_processing.py -s3 \
-        -i /home/pub/Work/data_arise_proteome/protvar/biogrid/updated_bg_human_interactions_PVDB.tsv \
-        -o /home/pub/Work/data_arise_proteome/protvar/biogrid/updated_bg_source.tsv \
+        -i $DATA_DIR/updated_bg_human_interactions_PVDB.tsv \
+        -o $DATA_DIR/updated_bg_source.tsv \
         --verbose
 ```
 *Stage 3 completed in 28.50 seconds*
@@ -90,15 +96,15 @@ Required Data:
 Example:
 
 ```
-/home/pub/Work/data_arise_proteome/protvar/suppl_ppi_models_.tsv
-/home/pub/Work/data_arise_proteome/protvar/af2_iptm_pdockq.tsv
+/full/path/suppl_ppi_models_.tsv
+/full/path/af2_iptm_pdockq.tsv
 ```
 
 Running the script.
 
 Example:
 ```
-./pv_data_merging.py --input_file_list /home/pub/Work/data_arise_proteome/protvar/input_files_suppl_mAF2.txt --outfile /home/pub/Work/data_arise_proteome/protvar/output/updated_suppl_ppi.tsv --verbose 
+./pv_data_merging.py --input_file_list $DATA_DIR/input_files_suppl_mAF2.txt --outfile $DATA_DIR/updated_suppl_ppi.tsv --verbose 
 ```
 *ELAPSED TIME: 4.60 seconds*
 
@@ -107,12 +113,12 @@ Example:
 
 Note that, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
 
-		## af2-models-split-ifresid_.tsv: file from PV
-		## updated_suppl_ppi.tsv: output of Step 1
+		## af2-models-split-ifresid_.tsv file from PV
+		## updated_suppl_ppi.tsv output of Step 1
 		These two files, one on each line == INPUT for script 
 
 ```
- 	./pv_data_merging.py --input_file_list /home/pub/Work/data_arise_proteome/protvar/input_files_AF2_updatedSuppl.txt --common_col interaction_id --outfile /home/pub/Work/data_arise_proteome/protvar/output/af2_suppl_ppi_combined.tsv --verbose 
+ 	./pv_data_merging.py --input_file_list $DATA_DIR/input_files_AF2_updatedSuppl.txt --common_col interaction_id --outfile $DATA_DIR/af2_suppl_ppi_combined.tsv --verbose 
 ```
 *ELAPSED TIME: 62.67 seconds*
 
@@ -120,11 +126,11 @@ Note that, as above, `--input_file_list` must be a file containing a list of fil
 
 Note that, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
 
-        ## af2_suppl_ppi_combined: output of Step 2
-		## updated_bg_source.tsv: output stage 3 of biogrid processing (biogrid_processing.py -s3)
+        ## af2_suppl_ppi_combined.tsv output of Step 2
+		## updated_bg_source.tsv output stage 3 of biogrid processing (biogrid_processing.py -s3)
 		These two files, one on each line == INPUT for script 
 ```
-./pv_data_merging.py --input_file_list /home/pub/Work/data_arise_proteome/protvar/input_files_updatedAF2_biogrid.txt --common_col interaction_id --outfile /home/pub/Work/data_arise_proteome/protvar/output/af2_suppl_ppi_biogrid_combined.tsv --verbose 
+./pv_data_merging.py --input_file_list $DATA_DIR/input_files_updatedAF2_biogrid.txt --common_col interaction_id --outfile $DATA_DIR/af2_suppl_ppi_biogrid_combined.tsv --verbose 
 ```
 *ELAPSED TIME: 32.69 seconds*
 
