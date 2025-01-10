@@ -79,6 +79,9 @@ Files required:
 - *af2-models-split-ifresid_.tsv*
 - *af2_iptm_pdockq.tsv*
 
+### Recap: comparison of AF2 and suppl_ppi files
+![af2_suppl](https://github.com/user-attachments/assets/232b490f-da2c-409b-8e85-ed0e5e20f31e)
+
 ### Step 1) Concatenate files: Files 2 and 3
 
 ![supp_af2_receieved](https://github.com/user-attachments/assets/e798a598-dd3d-4d46-a1b6-e20a080bcc2b)
