@@ -122,6 +122,7 @@ Note that, as above, `--input_file_list` must be a file containing a list of fil
 *ELAPSED TIME: 62.67 seconds*
 
 ### Step 3) FINAL MERGE:  Merge files on "interaction_id": (Files 2 and 3 and 1) and File 4
+![af2_bg_combined](https://github.com/user-attachments/assets/e162e3de-300b-432c-bfd3-58557aed29fe)
 
 Note that, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
 
