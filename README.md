@@ -119,27 +119,27 @@ Note that, as above, `--input_file_list` must be a file containing a list of fil
 		## updated_suppl_ppi.tsv output of Step 1
 		These two files, one on each line == INPUT for script 
 
-	  Filenames:
-	/full/path/
-	/full/path/
+	  	Filenames:
+		/full/path/af2-models-split-ifresid_.tsv
+		/full/path/updated_suppl_ppi.tsv
 
 ```
  	./pv_data_merging.py --input_file_list $DATA_DIR/input_files_AF2_updatedSuppl.txt --common_col interaction_id --outfile $DATA_DIR/af2_suppl_ppi_combined.tsv --verbose 
 ```
 *ELAPSED TIME: 62.67 seconds*
 
-### Step 3) FINAL MERGE:  Merge files on "interaction_id": (combined result of Files 2, 3 and 1) and File 4
+### Step 3) FINAL MERGE: Merge files on "interaction_id": (combined result of Files 2, 3 and 1) and File 4
 ![af2_bg_combined](https://github.com/user-attachments/assets/e162e3de-300b-432c-bfd3-58557aed29fe)
 
 Note that, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
 
-        ## af2_suppl_ppi_combined.tsv output of Step 2
-	## updated_bg_source.tsv output stage 3 of biogrid processing (biogrid_processing.py -s3)
-	These two files, one on each line == INPUT for script
+        	## af2_suppl_ppi_combined.tsv output of Step 2
+		## updated_bg_source.tsv output stage 3 of biogrid processing (biogrid_processing.py -s3)
+		These two files, one on each line == INPUT for script
  
-	Filenames:
-	/full/path/af2_suppl_ppi_combined.tsv
-	/full/path/updated_bg_source.tsv
+		Filenames:
+		/full/path/af2_suppl_ppi_combined.tsv
+		/full/path/updated_bg_source.tsv
   
 ```
 ./pv_data_merging.py --input_file_list $DATA_DIR/input_files_updatedAF2_biogrid.txt --common_col interaction_id --outfile $DATA_DIR/af2_suppl_ppi_biogrid_combined.tsv --verbose 
