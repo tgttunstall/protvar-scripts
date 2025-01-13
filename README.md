@@ -110,7 +110,7 @@ Example:
 ```
 *ELAPSED TIME: 4.60 seconds*
 
-### Step 2) Merge files on "interaction_id": (Files 2 and 3) and File 1
+### Step 2) Merge files on "interaction_id": (combined result of Files 2 and 3) and File 1
 ![af2_updated_suppl](https://github.com/user-attachments/assets/4116549a-4085-48be-beed-048b381c4363)
 
 Note that, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
