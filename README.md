@@ -130,8 +130,12 @@ Note that, as above, `--input_file_list` must be a file containing a list of fil
 Note that, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
 
         ## af2_suppl_ppi_combined.tsv output of Step 2
-		## updated_bg_source.tsv output stage 3 of biogrid processing (biogrid_processing.py -s3)
-		These two files, one on each line == INPUT for script 
+	## updated_bg_source.tsv output stage 3 of biogrid processing (biogrid_processing.py -s3)
+	These two files, one on each line == INPUT for script
+	Filenames:
+	/full/path/af2_suppl_ppi_combined.tsv
+	/full/path/updated_bg_source.tsv
+  
 ```
 ./pv_data_merging.py --input_file_list $DATA_DIR/input_files_updatedAF2_biogrid.txt --common_col interaction_id --outfile $DATA_DIR/af2_suppl_ppi_biogrid_combined.tsv --verbose 
 ```
