@@ -601,9 +601,6 @@ def write_list_of_dicts_to_tsv(data_list, output_filename):
 
 #print("Merged Interaction IDs:", merged_ids)
 ###############################################################################
-import csv
-from collections import defaultdict
-
 ############
 # Function: 
 ############
@@ -670,6 +667,7 @@ def dict_value_merge(input_file, key_column = 'interaction_id', selected_columns
 #assert len(data['P41143_Q5JY77']['Taxid_Interactor_A']) == counts['P41143_Q5JY77']['Taxid_Interactor_A']
 #print("Test passed: Data and counts match expected values.")
 
+###############################################################################
 ############
 # Function: 
 ############            
@@ -731,8 +729,6 @@ def write_nested_dict(data, output_file, delimiter = '\t', merged_value_delimite
 #                          output_file = '/home/pub/Work/data_arise_proteome/protvar/biogrid/test_dict_flattened.tsv',
 #                          delimiter = '\t',
 #                          merged_value_delimiter = ',')
-
-###############################################################################
 
 ###############################################################################
 ############
