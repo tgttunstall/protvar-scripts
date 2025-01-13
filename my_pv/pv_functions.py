@@ -450,7 +450,7 @@ def read_file_to_list_of_dicts(filename):
               The keys in each dictionary are derived from the column headers of the TSV file.
     
     Example:
-        Suppose we have a TSV file 'data.tsv' with the following content:
+        File: 'data.tsv' with the following content:
             Name    Age    City
             Alice   30     New York
             Bob     25     Los Angeles
@@ -601,125 +601,55 @@ def write_list_of_dicts_to_tsv(data_list, output_filename):
 
 #print("Merged Interaction IDs:", merged_ids)
 ###############################################################################
+import csv
+from collections import defaultdict
+
 ############
 # Function: 
 ############
-def process_and_merge_tsv(input_file, selected_columns = None, out_merged_value_format='list',
-                          output_file = None, output_to_file = False):
+def dict_value_merge(input_file, key_column = 'interaction_id', selected_columns = None):
     """
-    Processes a TSV file and merges data based on the 'interaction_id'. The function is capable of handling
-    large datasets efficiently by using lists for internal data aggregation and offering flexible options
-    for output formatting of merged values.
+    Merges values in a TSV file based on a specified key column and aggregates data into lists,
+    while tracking the number of merges for each column under each key.
 
     Args:
-        input_file (str): The file path to the TSV file to be processed. This file should be formatted with a header row,
-                          and each row should include an 'interaction_id' along with other data columns.
-        selected_columns (list of str, optional): A list of column names to be included in the processing. If None,
-                                                  all columns in the file are processed. This allows for selective data
-                                                  processing, reducing memory footprint and focusing on relevant data.
-        out_merged_value_format (str): Specifies the format for outputting merged values in the final dictionary and TSV file.
-                                   Options are 'list', 'csv', ';', '|'. 'list' retains Python list format,
-                                   while others convert lists to strings using the specified delimiter.
-        output_file (str, optional): The path to the output TSV file. If specified and output_to_file is True,
-                                     processed data is written to this file.
-        output_to_file (bool): If True, writes the processed data to the specified output_file. If False,
-                               the function only returns the processed data dictionary without writing to disk.
+        input_file (str): The path to the TSV file to process.
+        key_column (str): The column name to use as the key for merging.
+        selected_columns (list, optional): List of column names to merge. If None, all columns are merged.
 
     Returns:
-        dict: A dictionary where each key is a unique 'interaction_id' and each value is another dictionary of lists
-              or strings (based on out_merged_value_format) containing data from the processed columns. This dictionary
-              represents the merged and processed data, suitable for further analysis or export.
-
-    Raises:
-        IOError: If the input file cannot be opened.
-        ValueError: If specified columns in selected_columns do not exist in the input file.
-
-    Example:
-        # Process the file and write the output to 'output.tsv', merging values with semicolons.
-        processed_data = process_and_merge_tsv('biogrid_data.tsv',
-                                               out_merged_value_format=';',
-                                               output_file='output.tsv',
-                                               output_to_file=True)
-
-    This function is particularly useful in bioinformatics and data science contexts where large datasets
-    need to be preprocessed and normalized for further analysis or integration with other data sources.
+        dict: A dictionary with keys as unique entries from the key column and values as dictionaries
+              of data aggregated into lists.
+        dict: A tracking dictionary that counts the number of entries merged for each column under each key.
     """
+    merged_data = defaultdict(lambda: defaultdict(list))
+    merge_counts = defaultdict(lambda: defaultdict(int))
+    
+    with open(input_file, 'r', newline = '') as file:
+        reader = csv.DictReader(file, delimiter='\t')
 
-    data = {}
-    merge_info = defaultdict(lambda: defaultdict(list))  # Tracks merging information
-
-    with open(input_file, mode = 'r', newline = '') as file:
-        reader = csv.DictReader(file, delimiter = '\t')
-        all_columns = reader.fieldnames if not selected_columns else selected_columns
-
+        # Determine which columns to merge
+        if selected_columns:
+            all_columns = selected_columns
+        else:
+            all_columns = [col for col in reader.fieldnames if col != key_column]
+                
         for row in reader:
-            interaction_id = row.get('interaction_id')
-            if 'N/A' in interaction_id:
-                continue  # Skip invalid interaction IDs
-
+            key_value = row[key_column]
+            if key_value == 'N/A':
+                continue  # Skip entries with invalid key values
+    
             for col in all_columns:
-                value = row[col]
-                data.setdefault(interaction_id, {}).setdefault(col, []).append(value)
+                col_value = row[col]
+                merged_data[key_value][col].append(col_value)
+                merge_counts[key_value][col] += 1
+                    
+    # Convert defaultdict to dict for return
+    return dict(merged_data), dict(merge_counts)
 
-    if output_to_file and output_file:
-        write_to_tsv(data, output_file, all_columns, out_merged_value_format)
-
-    return data
-
-###############################################################################
-############
-# Function: 
-############            
-def write_to_tsv(data, output_file, columns, out_merged_value_format):
-    """
-    Writes processed data to a TSV file, including the interaction_id as a row identifier, 
-    and formatting merged values according to out_merged_value_format.
-
-    Args:
-        data (dict): The processed data where keys are 'interaction_id' and values are dictionaries of column data.
-        output_file (str): The path to the output TSV file where the data should be written.
-        columns (list of str): List of columns to include in the output file. Should match keys in data values.
-        out_merged_value_format (str): The format to use for merged values in the output.
-                                      'list' will output Python lists directly, while any other value will
-                                      treat it as a delimiter for joining list elements into a string.
-
-    Example:
-        # Assuming data is properly formatted:
-        write_to_tsv(processed_data, 'output.tsv', ['interaction_id'] + columns, 'csv')
-    """
-    with open(output_file, mode = 'w', newline = '') as file:
-        # Ensure 'interaction_id' is included as a part of the output columns if not already included
-        if 'interaction_id' not in columns:
-            columns = ['interaction_id'] + columns
-        
-        writer = csv.DictWriter(file, fieldnames = columns, delimiter = '\t')
-        writer.writeheader()
-
-        for interaction_id, values in data.items():
-            row = {'interaction_id': interaction_id}  # Set the interaction_id in the row
-            for col in columns:
-                if col == 'interaction_id':
-                    continue  # Skip the interaction_id since it's already handled
-                if col in values:  # Ensure the column exists in values before trying to access it
-                    if out_merged_value_format == 'list':
-                        #row[col] = '|'.join(str(x) for x in values[col])  # Use '|' to join lists as string if 'list' format
-                        row[col] = values[col]
-
-                    else:
-                        delimiter = ',' if out_merged_value_format == 'csv' else out_merged_value_format
-                        row[col] = delimiter.join(set(values[col]))  # Remove duplicates and join by specified delimiter
-            writer.writerow(row)
-
-# Usage example
-# Assuming processed_data is the dictionary returned by the processing function
-# and 'columns' is the list of column names expected in the output
-# write_to_tsv(processed_data, 'output.tsv', columns, 'csv')
-
-# # Example usage
-# filename = '/home/pub/Work/data_arise_proteome/protvar/biogrid/updated_sample_biogrid_PVDB.tsv'
-# outfile = '/home/pub/Work/data_arise_proteome/protvar/biogrid/updated_sample_bg_source.tsv'
-
-# #my_cols=None
+# Usage example:
+#infile = '/home/pub/Work/data_arise_proteome/protvar/biogrid/updated_sample_biogrid_PVDB.tsv'
+#key_column = 'interaction_id'
 # my_cols = ['Publication_Identifiers',
 # 'Taxid_Interactor_A',
 # 'Taxid_Interactor_B',
@@ -728,14 +658,79 @@ def write_to_tsv(data, output_file, columns, out_merged_value_format):
 # 'Interaction_Identifiers',
 # 'Confidence_Values']
 
+# data, counts = dict_value_merge(input_file = infile, key_column = 'interaction_id', selected_columns = my_cols)
+# pp.pprint(data['P41143_Q5JY77'])
+# a = subset_dict_by_keys(data, ['P41143_Q5JY77'])
+# b = subset_dict_by_keys(counts, ['P41143_Q5JY77', 'A8MVS5_Q8ND76'])
+    
+# Asserts to check the correctness of data
+#assert isinstance(data, dict)
+#assert isinstance(counts, dict)
+#assert 'P41143_Q5JY77' in data  # Check for expected keys
+#assert len(data['P41143_Q5JY77']['Taxid_Interactor_A']) == counts['P41143_Q5JY77']['Taxid_Interactor_A']
+#print("Test passed: Data and counts match expected values.")
 
-# processed_data = process_and_merge_tsv(filename,
-#                                        selected_columns = my_cols,
-#                                        out_merged_value_format = 'csv', 
-#                                        output_file = outfile, 
-#                                        output_to_file = True)
-# pp.pprint(processed_data['P41143_Q5JY77'])
-# print("Processed Data Sample:", list(processed_data.items())[:1])
+############
+# Function: 
+############            
+
+def write_nested_dict(data, output_file, delimiter = '\t', merged_value_delimiter = ','):
+    """
+    Writes a nested dictionary (with inner lists) to a TSV file.
+
+    Args:
+        data (dict): The nested dictionary where the outer key is 'interaction_id' and
+                     each inner dictionary has column names as keys with values as lists.
+        output_file (str): Path to the file where the TSV data should be written.
+        delimiter (str): Delimiter to use in the output TSV file, typically '\t' for TSV.
+        merged_value_delimiter (str): Delimiter to join elements within lists for the TSV output.
+    """
+    with open(output_file, 'w', newline = '') as file:
+        # Assume all entries have the same structure, use the first item to determine fieldnames
+        fieldnames = ['interaction_id'] + list(next(iter(data.values())).keys())
+        writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter=delimiter)
+        writer.writeheader()
+
+        for interaction_id, columns in data.items():
+            row = {'interaction_id': interaction_id}
+            for col, values in columns.items():
+                # Check if the value is a list and join with delimiter if true
+                if isinstance(values, list):
+                    row[col] = merged_value_delimiter.join(values)
+                else:
+                    row[col] = values  # Write the single value directly
+            writer.writerow(row)
+            
+# Example usage
+# test_dict = {'A8MVS5_Q8ND76': 
+#              {'Confidence_Values': ['score:0.999690761'],
+#               'Interaction_Identifiers': ['biogrid:3044379'],
+#               'Interaction_Types': ['psi-mi:"MI:0915"(physical association)'],
+#                                'Publication_Identifiers': ['pubmed:33961781'],
+#                                'Source_Database': ['psi-mi:"MI:0463"(biogrid)'],
+#                                'Taxid_Interactor_A': ['taxid:9606'],
+#                                'Taxid_Interactor_B': ['taxid:9606']},
+             
+#              'P41143_Q5JY77': {'Confidence_Values': ['-',
+#                                                      '-'],
+#                                'Interaction_Identifiers': ['biogrid:11769',
+#                                                            'biogrid:905123'],
+#                                'Interaction_Types': ['psi-mi:"MI:0407"(direct interaction)', 
+#                                                      'psi-mi:"MI:0407"(direct interaction)'],
+#                                'Publication_Identifiers': ['pubmed:12142540',
+#                                                            'pubmed:15086532'],
+#                                'Source_Database': ['psi-mi:"MI:0463"(biogrid)',
+#                                                    'psi-mi:"MI:0463"(biogrid)'],
+#                                'Taxid_Interactor_A': ['taxid:9606',
+#                                                       'taxid:9606'],
+#                                'Taxid_Interactor_B': ['taxid:9606',
+#                                                       'taxid:9606']}
+#              }
+             
+# write_nested_dict(data = test_dict, 
+#                          output_file = '/home/pub/Work/data_arise_proteome/protvar/biogrid/test_dict_flattened.tsv',
+#                          delimiter = '\t',
+#                          merged_value_delimiter = ',')
 
 ###############################################################################
 

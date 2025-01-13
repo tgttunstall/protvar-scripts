@@ -78,11 +78,11 @@ def run_stage2(input_file, output_file, config_path, verbose):
         elapsed = time.time() - start_time
         print(f"Stage 2 completed in {elapsed:.2f} seconds. Data is updated and written to {output_file}")
 
-def run_stage3(input_file, output_file, verbose):
-    print("Starting Stage 3: Merging data values of specified columns")
-    
+def run_stage3(input_file, output_file, verbose):  
     start_time = time.time()
-   
+    
+    print("Starting Stage 3: Merging data values of specified columns" )
+
     cols_for_value_merge = ['Publication_Identifiers',
                'Taxid_Interactor_A',
                'Taxid_Interactor_B',
@@ -90,12 +90,31 @@ def run_stage3(input_file, output_file, verbose):
                'Source_Database',
                'Interaction_Identifiers',
                'Confidence_Values']
+
+    # process_and_merge_tsv(input_file = input_file,
+    #                   selected_columns = cols_for_value_merge,
+    #                   out_merged_value_format = 'csv', 
+    #                   output_file = output_file,
+    #                   output_to_file = True)
     
-    process_and_merge_tsv(input_file = input_file,
-                      selected_columns = cols_for_value_merge,
-                      out_merged_value_format = 'csv', 
+    value_merged_bg_data, value_merged_counts = dict_value_merge(input_file = input_file, 
+                                                                 key_column = 'interaction_id', 
+                                                                 selected_columns = cols_for_value_merge)
+    
+    # write merged_values file                 
+    write_nested_dict(data = value_merged_bg_data, 
                       output_file = output_file,
-                      output_to_file = True)
+                      delimiter = '\t',
+                      merged_value_delimiter = ',')
+    # OPTIONAL: write tracking dict
+    #counts_filename = os.path.splitext(os.path.basename(output_file))[0] + 'COUNTS.tsv'
+    dirname, fname = os.path.split(output_file)
+    counts_filename = dirname + '/' + os.path.splitext(fname)[0] + '_COUNTS.tsv'
+    write_nested_dict(data = value_merged_counts, 
+                      output_file = counts_filename,
+                      delimiter = '\t',
+                      merged_value_delimiter = ',')
+        
     if verbose:
         print(f"Input file: {input_file}")
         print(f"Output file: {output_file}")
