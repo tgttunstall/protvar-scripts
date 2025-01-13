@@ -40,7 +40,8 @@ def setup_arguments():
     # New argument to control whether to write the tracking data
     parser.add_argument('--write_counts', 
                         action = 'store_true',
-                        help = "Enable output of tracking counts for merged data in Stage 3")
+                        default = False, 
+                        help ="Enable or disable output of tracking counts for merged data in Stage 3")
 
     return parser
 
@@ -84,7 +85,7 @@ def run_stage2(input_file, output_file, config_path, verbose):
         elapsed = time.time() - start_time
         print(f"Stage 2 completed in {elapsed:.2f} seconds. Data is updated and written to {output_file}")
 
-def run_stage3(input_file, output_file, verbose, write_counts = True):
+def run_stage3(input_file, output_file, verbose, write_counts):
     start_time = time.time()
     print("Starting Stage 3: Merging data values of specified columns")
 
@@ -120,7 +121,7 @@ def run_stage3(input_file, output_file, verbose, write_counts = True):
         print(f"Output file: {output_file}")
         print(f"Using the following columns to merge values: {cols_for_value_merge}")
         elapsed = time.time() - start_time
-        print(f"Stage 3 completed in {elapsed:.2f} seconds. Merged data is written to {output_file}")
+        print(f"Stage 3 completed in {elapsed:.2f} seconds. \nMerged data is written to {output_file}")
 
 
 def main():
