@@ -75,8 +75,8 @@ file which contains biogrid data mapped to af2 and suppl_ppi data
 
 Files required:
 
-- *suppl_ppi_models_.tsv*
 - *af2-models-split-ifresid_.tsv*
+- *suppl_ppi_models_.tsv*
 - *af2_iptm_pdockq.tsv*
 
 ### Recap: comparison of AF2 and suppl_ppi files
