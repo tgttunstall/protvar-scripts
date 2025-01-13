@@ -110,7 +110,7 @@ Example:
 ```
 *ELAPSED TIME: 4.60 seconds*
 
-### Step 2) Merge files on "interaction_id": (combined result of Files 2 and 3) and File 1
+### Step 2) Merge files on "interaction_id": File 1 and combined result of (Files 2 and 3)
 ![af2_updated_suppl](https://github.com/user-attachments/assets/4116549a-4085-48be-beed-048b381c4363)
 
 Note that, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
@@ -118,6 +118,10 @@ Note that, as above, `--input_file_list` must be a file containing a list of fil
 		## af2-models-split-ifresid_.tsv file from PV
 		## updated_suppl_ppi.tsv output of Step 1
 		These two files, one on each line == INPUT for script 
+
+	  Filenames:
+	/full/path/
+	/full/path/
 
 ```
  	./pv_data_merging.py --input_file_list $DATA_DIR/input_files_AF2_updatedSuppl.txt --common_col interaction_id --outfile $DATA_DIR/af2_suppl_ppi_combined.tsv --verbose 
@@ -132,6 +136,7 @@ Note that, as above, `--input_file_list` must be a file containing a list of fil
         ## af2_suppl_ppi_combined.tsv output of Step 2
 	## updated_bg_source.tsv output stage 3 of biogrid processing (biogrid_processing.py -s3)
 	These two files, one on each line == INPUT for script
+ 
 	Filenames:
 	/full/path/af2_suppl_ppi_combined.tsv
 	/full/path/updated_bg_source.tsv
