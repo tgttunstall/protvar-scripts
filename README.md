@@ -64,6 +64,7 @@ Read step 3 output file, and perform "merging of column values" for a given inte
     ./biogrid_processing.py -s3 \
         -i $DATA_DIR/updated_bg_human_interactions_PVDB.tsv \
         -o $DATA_DIR/updated_bg_source.tsv \
+	--write_counts \
         --verbose
 ```
 *Stage 3 completed in 28.50 seconds*
