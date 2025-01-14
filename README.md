@@ -50,7 +50,7 @@ Files required:
 
 ```
 ./biogrid_processing.py -s2 \
-        --config-file ../pv_db.ini
+        --config-file ../pv_db.ini \
         -i $DATA_DIR/updated_bg_human_interactions.tsv \
         -o $DATA_DIR/updated_bg_human_interactions_PVDB.tsv \
       	--verbose
