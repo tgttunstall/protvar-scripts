@@ -398,27 +398,30 @@ def subset_dict_by_keys(input_dict, keys):
 ############
 # Function: 
 ############
-def plot_venn(*sets, labels = None, plot_title = 'Venn Diagram of Sets'):
+def plot_venn(*sets, labels=None, plot_title='Venn Diagram of Sets'):
     """
     Plots a Venn diagram for two or three sets.
     
     Args:
         *sets: Variable number of set arguments.
-        labels (list of str): Labels for the sets in the Venn diagram.
+        labels (list of str, optional): Labels for the sets in the Venn diagram. Must match the number of sets if provided.
         plot_title (str): Title of the plot.
     """
     
-    if len(sets) not in [2, 3]:
+    num_sets = len(sets)
+    
+    if num_sets not in [2, 3]:
         raise ValueError("Venn diagrams can only be plotted for two or three sets.")
     
+    if labels is not None and len(labels) != num_sets:
+        raise ValueError(f"The number of labels must match the number of sets. Expected {num_sets}, got {len(labels)}.")
+    
     plt.figure(figsize=(8, 8))
-    if len(sets) == 2:
-        if labels is None:
-            labels = ['Set1', 'Set2']
+    if num_sets == 2:
+        labels = labels if labels else ['Set1', 'Set2']
         venn2(sets, labels)
-    elif len(sets) == 3:
-        if labels is None:
-            labels = ['Set1', 'Set2', 'Set3']
+    elif num_sets == 3:
+        labels = labels if labels else ['Set1', 'Set2', 'Set3']
         venn3(sets, labels)
 
     plt.title(plot_title)
