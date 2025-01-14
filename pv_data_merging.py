@@ -114,7 +114,7 @@ def main():
             
             # Filter result_dict to keep only specific keys as these are common between two files
             # otherwise directly writing the dict to file will result in lots of empty column values
-            keys_to_keep = ['interaction_id', 'pdb', 'iptm', 'pdockq', 'sources']
+            keys_to_keep = ['interaction_id', 'pdb', 'iptm', 'pdockq', 'pdockq_fd', 'sources']
             final_dict = subset_dict_of_dicts(result_dict, keys_to_keep)
             if args.verbose:
                 print(f"No. of output columns: {len(keys_to_keep)}, \nOutput columns are: {keys_to_keep}")

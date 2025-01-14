@@ -306,7 +306,7 @@ def write_dict_to_tsv(data, filename, include_keys = True, ordered_columns = Non
 
     # Initialize fieldnames starting with ordered columns if specified
     if ordered_columns is None:
-        ordered_columns = ['interaction_id', 'pdb', 'pdockq', 'iptm', 'sources']
+        ordered_columns = ['interaction_id', 'pdb', 'pdockq', 'pdockq_fd', 'iptm', 'sources']
 
     # Collect all keys from data values to determine additional columns
     additional_columns = set()

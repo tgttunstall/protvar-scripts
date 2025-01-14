@@ -40,7 +40,6 @@ def setup_arguments():
     # New argument to control whether to write the tracking data
     parser.add_argument('--write_counts', 
                         action = 'store_true',
-                        default = False, 
                         help ="Enable or disable output of tracking counts for merged data in Stage 3")
 
     return parser
@@ -76,8 +75,8 @@ def run_stage2(input_file, output_file, config_path, verbose):
 
     start_time = time.time()
     final_data, tracking_dict = process_biogrid_file(input_file, db_params)
-    write_list_of_dicts_to_tsv(final_data, output_file)
-    # OPTIONAL: you can also write out the tracking dict for debug
+    write_list_of_dicts_to_tsv(final_data, output_file)  
+    #OPTIONAL: you can write out the tracking dict
 
     if verbose:
         print(f"Input file: {input_file}")
@@ -104,6 +103,14 @@ def run_stage3(input_file, output_file, verbose, write_counts):
                                                                  key_column = 'interaction_id',
                                                                  selected_columns = cols_for_value_merge)
 
+
+    write_nested_dict(data = value_merged_bg_data,
+                      output_file = output_file,
+                      delimiter = '\t',
+                      merged_value_delimiter = ',')
+    
+    print(f"Data with merged values written to: {output_file}")
+
     # Optionally write tracking information if the flag is set  
     if write_counts:
         print("Writing tracking dict with counts as well...")
@@ -114,7 +121,7 @@ def run_stage3(input_file, output_file, verbose, write_counts):
                           delimiter = '\t',
                           merged_value_delimiter = ',')
         if verbose:
-            print(f"Tracking counts written to {counts_filename}")
+            print(f"Tracking counts written to: {counts_filename}")
 
     if verbose:
         print(f"Input file: {input_file}")
@@ -127,10 +134,7 @@ def run_stage3(input_file, output_file, verbose, write_counts):
 def main():
     parser = setup_arguments()
     args = parser.parse_args()
-
-    # Configuration and setup
-    #db_params = load_configuration(args.config)
-    
+  
     # Execute the appropriate stage
     if args.stage == 1:
         run_stage1(args.input, args.output, args.verbose)
