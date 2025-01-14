@@ -3,7 +3,7 @@
 
 	python3 -m venv pv
 
-	source pv/bin/env
+	source pv/bin/activate
 
 	export DATA_DIR=<PATH_TO_DATA DIR>
 
