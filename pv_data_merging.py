@@ -3,7 +3,7 @@ import argparse
 import os
 import sys
 from time import time
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from my_pv import * # my custom functions
 
 #from file_processing_functions import read_file_to_dict, merge_dicts, write_dict_to_tsv
