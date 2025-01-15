@@ -2,19 +2,25 @@
 import argparse
 import os
 import sys
-from time import time
-#import matplotlib.pyplot as plt
-from my_pv import * # my custom functions
-
+import csv
+import time
+#from time import time
+from my_pv.pv_functions import read_file_to_dict, merge_dicts, write_nested_dict, subset_dict_of_dicts
 #from file_processing_functions import read_file_to_dict, merge_dicts, write_dict_to_tsv
-
+#from my_pv import * # my custom functions
+###############################################################################
+############
+# Function: 
+############
 def read_paths_from_file(file_path):
     """
     Reads a file where each line is a file path and returns a list of these paths.
     """
     with open(file_path, 'r') as file:
         return [line.strip() for line in file if line.strip()]
-
+############
+# Function: 
+############
 def check_column_in_file(file_path, column_name, delimiter = '\t'):
     """
     Checks if a given column name exists in the file header.
@@ -23,7 +29,7 @@ def check_column_in_file(file_path, column_name, delimiter = '\t'):
         reader = csv.reader(file, delimiter = delimiter)  # Adjust delimiter if necessary
         headers = next(reader)
         return column_name in headers
-
+###############################################################################
 def main():
     parser = argparse.ArgumentParser(description="Merge two data files with optional control over merging behavior.")
     
@@ -86,9 +92,17 @@ def main():
                                           supplemental_dict, 
                                           join_type = 'inner')
             
-        write_dict_to_tsv(data = primary_dict, 
-                          filename = args.outfile, 
-                          include_keys = True)
+         # write_dict_to_tsv(data = primary_dict, 
+         #                   filename = args.outfile, 
+         #                   include_keys = True)
+        
+        write_nested_dict(data = primary_dict, 
+                           output_file = args.outfile, 
+                           key_column_name = "interaction_id", 
+                           export_keys = False,
+                           delimiter = '\t', 
+                           merged_value_delimiter = ',')
+        
         if args.verbose:
             print(f"combined dict length: {len(primary_dict)}")
             elapsed = time.time() - start_time
@@ -122,16 +136,25 @@ def main():
             # Filter result_dict to keep only specific keys as these are common between two files
             # otherwise directly writing the dict to file will result in lots of empty column values
             keys_to_keep = ['interaction_id', 'pdb', 'iptm', 'pdockq', 'pdockq_fd', 'sources']
+            
             final_dict = subset_dict_of_dicts(result_dict, keys_to_keep)
             if args.verbose:
                 print(f"No. of output columns: {len(keys_to_keep)}, \nOutput columns are: {keys_to_keep}")
                 print(f"Concatenated dict length: {len(final_dict)}")
 
                
-            write_dict_to_tsv(data = final_dict, 
-                              filename = args.outfile, 
-                              include_keys = True,
-                              ordered_columns = None)
+             # write_dict_to_tsv(data = final_dict, 
+             #                   filename = args.outfile, 
+             #                   include_keys = True,
+             #                   ordered_columns = None)
+            
+            write_nested_dict(data = final_dict, 
+                               output_file = args.outfile, 
+                               key_column_name = "interaction_id", 
+                               export_keys = False,
+                               delimiter = '\t', 
+                               merged_value_delimiter = ',')
+            
             print(f"Concatenating complete")
 
         except ValueError as e:

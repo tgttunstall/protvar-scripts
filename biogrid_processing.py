@@ -106,10 +106,18 @@ def run_stage3(input_file, output_file, verbose, write_counts):
                                                                  selected_columns = cols_for_value_merge)
 
 
-    write_nested_dict(data = value_merged_bg_data,
-                      output_file = output_file,
-                      delimiter = '\t',
+    # write_nested_dict(data = value_merged_bg_data,
+    #                   output_file = output_file,
+    #                   delimiter = '\t',
+    #                   merged_value_delimiter = ',')
+    
+    write_nested_dict(data = value_merged_bg_data, 
+                      output_file = output_file, 
+                      key_column_name = "interaction_id", 
+                      export_keys = True,
+                      delimiter = '\t', 
                       merged_value_delimiter = ',')
+
     
     print(f"Data with merged values written to: {output_file}")
 
@@ -118,10 +126,18 @@ def run_stage3(input_file, output_file, verbose, write_counts):
         print("Writing tracking dict with counts as well...")
         dirname, fname = os.path.split(output_file)
         counts_filename = os.path.join(dirname, os.path.splitext(fname)[0] + '_COUNTS.tsv')
-        write_nested_dict(data = value_merged_counts,
-                          output_file = counts_filename,
-                          delimiter = '\t',
+        # write_nested_dict(data = value_merged_counts,
+        #                   output_file = counts_filename,
+        #                   delimiter = '\t',
+        #                   merged_value_delimiter = ',')
+        
+        write_nested_dict(data = value_merged_counts, 
+                          output_file = counts_filename, 
+                          key_column_name = "interaction_id", 
+                          export_keys = True,
+                          delimiter = '\t', 
                           merged_value_delimiter = ',')
+
         if verbose:
             print(f"Tracking counts written to: {counts_filename}")
 

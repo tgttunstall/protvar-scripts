@@ -45,6 +45,59 @@ def secs2time(secs):
     hours, minutes = divmod(minutes, 60)
     return "{:02.0f}h {:02.0f}m {:02.0f}s".format(hours, minutes, seconds)
 ###############################################################################
+#############
+# Function: subset n entries from dict
+#############
+def subset_dict(input_dict, num_entries):
+    """
+    This function subsets a dictionary based on x number of entries.
+    
+    Parameters:
+    - input_dict: The original dictionary to be subsetted.
+    - num_entries: number of entries to be subsetted 
+    
+    Returns:
+    - A new dictionary containing only the specified number of entries.
+    """
+    # Initialize an empty dictionary to store the subset
+    subset = {}
+ 
+    # Get the specified number of keys
+    keys = list(input_dict.keys())[:num_entries]
+    
+    # Iterate over the keys and add them to the subset dictionary
+    for key in keys:
+        subset[key] = input_dict[key]
+    
+    return subset
+###############################################################################
+#############
+# Function: subset dict based on specific keys
+############
+def subset_dict_by_keys(input_dict, keys):
+    """
+    This function subsets a dictionary based on specific keys.
+    
+    Parameters:
+    - input_dict: The original dictionary to be subsetted.
+    - keys: A list of keys to include in the subset.
+    
+    Returns:
+    - A new dictionary containing only the specified keys.
+    """
+    # Initialize an empty dictionary to store the subset
+    subset = {}
+
+    # Iterate over the specified keys and add them to the subset dictionary if they exist in the input_dict
+    for key in keys:
+        if key in input_dict:
+            subset[key] = input_dict[key]
+
+    return subset
+
+# Example usage
+#a = subset_dict_by_keys(ex2D, [0,1])
+###############################################################################
 ###########
 # Function: 
 ###########   
@@ -283,115 +336,6 @@ def subset_dict_of_dicts(data, keys_to_keep):
 ############
 # Function: 
 ############
-def write_dict_to_tsv(data, filename, include_keys = True, ordered_columns = None):
-    """
-    Writes a dictionary of dictionaries to a TSV file, including dictionary keys as 'interaction_id',
-    filling missing fields with 'N/A', and ordering columns as specified followed by any additional columns.
-
-    Args:
-        data (dict): The dictionary to write, where each key is the row identifier, and each value is another dictionary representing the row data.
-        filename (str): The name of the file to save the data to.
-        include_keys (bool): Whether to include dictionary keys as a column 'interaction_id'.
-        ordered_columns (list): List of columns to order at the beginning, any additional columns appear in alphabetical order afterwards.
-        force_lowercase (bool): If True, converts all column names to lowercase before writing to the file.
-    """
-    if not data:
-        print("No data to write.")
-        return
-
-    # Initialize fieldnames starting with ordered columns if specified
-    if ordered_columns is None:
-        ordered_columns = ['interaction_id', 'pdb', 'pdockq', 'pdockq_fd', 'iptm', 'sources']
-
-    # Collect all keys from data values to determine additional columns
-    additional_columns = set()
-    for entry in data.values():
-        additional_columns.update(entry.keys())
-    
-    # Remove any explicitly ordered columns from the additional columns
-    additional_columns.difference_update(ordered_columns)
-    
-    # Final fieldnames list, ordered columns followed by sorted additional columns
-    fieldnames = ordered_columns + sorted(additional_columns)
-    
-    # Writing to a TSV file
-    with open(filename, 'w', newline = '') as file:
-        writer = csv.DictWriter(file, fieldnames = fieldnames, delimiter = '\t')
-        writer.writeheader()
-        for key, row_data in data.items():
-            # Ensure 'interaction_id' is included from keys if not already present and include_keys is True
-            if include_keys and 'interaction_id' not in row_data:
-                row_data['interaction_id'] = key
-            # Ensure all fields are present and set missing fields to 'N/A'
-            complete_row = {field: row_data.get(field, 'N/A') for field in fieldnames}
-            writer.writerow(complete_row)
-
-# Example usage:
-# data = {
-#    "001": {"pdb": "Structure1", "pdockq": 0.85, "iptm": "Modified", "sources": "Experiment", "resid1": "R100", "resid2": "K200", "extra1": "Value1"},
-#    "002": {"pdb": "Structure2", "pdockq": 0.90, "extra2": "Value2", "extra3": "Value3"}  # Including unexpected fields
-#}
-
-#write_dict_to_tsv(data, 'output.tsv', 
-            #, include_keys = True, 
-            #, ordered_columns = ['interaction_id', 'pdb', 'pdockq', 'iptm', 'sources'])
-###############################################################################
-#############
-# Function: subset n entries from dict
-#############
-def subset_dict(input_dict, num_entries):
-    """
-    This function subsets a dictionary based on x number of entries.
-    
-    Parameters:
-    - input_dict: The original dictionary to be subsetted.
-    - num_entries: number of entries to be subsetted 
-    
-    Returns:
-    - A new dictionary containing only the specified number of entries.
-    """
-    # Initialize an empty dictionary to store the subset
-    subset = {}
- 
-    # Get the specified number of keys
-    keys = list(input_dict.keys())[:num_entries]
-    
-    # Iterate over the keys and add them to the subset dictionary
-    for key in keys:
-        subset[key] = input_dict[key]
-    
-    return subset
-###############################################################################
-#############
-# Function: subset dict based on specific keys
-############
-def subset_dict_by_keys(input_dict, keys):
-    """
-    This function subsets a dictionary based on specific keys.
-    
-    Parameters:
-    - input_dict: The original dictionary to be subsetted.
-    - keys: A list of keys to include in the subset.
-    
-    Returns:
-    - A new dictionary containing only the specified keys.
-    """
-    # Initialize an empty dictionary to store the subset
-    subset = {}
-
-    # Iterate over the specified keys and add them to the subset dictionary if they exist in the input_dict
-    for key in keys:
-        if key in input_dict:
-            subset[key] = input_dict[key]
-
-    return subset
-
-# Example usage
-#a = subset_dict_by_keys(ex2D, [0,1])
-###############################################################################
-############
-# Function: 
-############
 def read_file_to_list_of_dicts(filename):
     """
     Reads a TSV (Tab-Separated Values) file and converts each row into a dictionary,
@@ -622,64 +566,94 @@ def dict_value_merge(input_file, key_column = 'interaction_id', selected_columns
 ###############################################################################
 ############
 # Function: 
-############            
-def write_nested_dict(data, output_file, delimiter = '\t', merged_value_delimiter = ','):
+############
+def write_nested_dict(data, 
+                      output_file, 
+                      key_column_name = "ID", 
+                      export_keys = True, 
+                      delimiter = "\t", 
+                      merged_value_delimiter = ","):
     """
-    Writes a nested dictionary (with inner lists) to a TSV file.
+    Writes a nested dictionary to a TSV file.
 
     Args:
-        data (dict): The nested dictionary where the outer key is 'interaction_id' and
-                     each inner dictionary has column names as keys with values as lists.
-        output_file (str): Path to the file where the TSV data should be written.
-        delimiter (str): Delimiter to use in the output TSV file, typically '\t' for TSV.
-        merged_value_delimiter (str): Delimiter to join elements within lists for the TSV output.
+        data (dict): The nested dictionary where the outer key is an identifier (e.g., 'interaction_id'),
+                     and each inner dictionary contains column names as keys with values as lists or single values.
+        output_file (str): Path to the output TSV file.
+        key_column_name (str): The name of the column that will store dictionary keys. Defaults to "ID".
+        export_keys (bool): Whether to include the dictionary keys in the output file. Defaults to True.
+        delimiter (str): Field delimiter for the TSV file. Defaults to '\t' for TSV format.
+        merged_value_delimiter (str): Delimiter to join list values in the output. Defaults to ','.
     """
-    with open(output_file, 'w', newline = '') as file:
-        # Assume all entries have the same structure, use the first item to determine fieldnames
-        fieldnames = ['interaction_id'] + list(next(iter(data.values())).keys())
+    if not data:
+        raise ValueError("The input data dictionary is empty. No file will be written.")
+
+    with open(output_file, 'w', newline='') as file:
+        # Collect all possible fieldnames from the data to handle varying fields across entries
+        all_fields = set()
+        for columns in data.values():
+            all_fields.update(columns.keys())
+
+        # Ensure the key column is appropriately handled
+        # If the dict of dicts has extra fields, then the output file will have all fieldnames with N/A where applicable
+        fieldnames = [key_column_name] + sorted(all_fields) if export_keys else sorted(all_fields)
         writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter=delimiter)
         writer.writeheader()
 
-        for interaction_id, columns in data.items():
-            row = {'interaction_id': interaction_id}
-            for col, values in columns.items():
-                # Check if the value is a list and join with delimiter if true
-                if isinstance(values, list):
-                    row[col] = merged_value_delimiter.join(values)
-                else:
-                    row[col] = values  # Write the single value directly
-            writer.writerow(row)
+        for key, columns in data.items():
+            row = {key_column_name: key} if export_keys else {}
             
+            for field in fieldnames:
+                if export_keys and field == key_column_name:
+                    continue  # Skip as it's already handled
+                values = columns.get(field, None)  # Use None to clearly indicate missing values
+                if values is None:
+                    row[field] = 'N/A'  # Explicitly set missing fields to 'N/A'
+                elif isinstance(values, list):
+                    row[field] = merged_value_delimiter.join(map(str, values))  # Handle list values
+                else:
+                    row[field] = str(values)  # Convert single values to string  
+            writer.writerow(row)
+
 # Example usage:
 # test_dict = {'A8MVS5_Q8ND76': 
-#              {'Confidence_Values': ['score:0.999690761'],
+#               {'Confidence_Values': ['score:0.999690761'],
 #               'Interaction_Identifiers': ['biogrid:3044379'],
 #               'Interaction_Types': ['psi-mi:"MI:0915"(physical association)'],
-#                                'Publication_Identifiers': ['pubmed:33961781'],
-#                                'Source_Database': ['psi-mi:"MI:0463"(biogrid)'],
-#                                'Taxid_Interactor_A': ['taxid:9606'],
-#                                'Taxid_Interactor_B': ['taxid:9606']},
-             
-#              'P41143_Q5JY77': {'Confidence_Values': ['-',
-#                                                      '-'],
-#                                'Interaction_Identifiers': ['biogrid:11769',
-#                                                            'biogrid:905123'],
-#                                'Interaction_Types': ['psi-mi:"MI:0407"(direct interaction)', 
-#                                                      'psi-mi:"MI:0407"(direct interaction)'],
-#                                'Publication_Identifiers': ['pubmed:12142540',
-#                                                            'pubmed:15086532'],
-#                                'Source_Database': ['psi-mi:"MI:0463"(biogrid)',
-#                                                    'psi-mi:"MI:0463"(biogrid)'],
-#                                'Taxid_Interactor_A': ['taxid:9606',
+#                                 'Publication_Identifiers': ['pubmed:33961781'],
+#                                 'Source_Database': ['psi-mi:"MI:0463"(biogrid)'],
+#                                 'Taxid_Interactor_A': ['taxid:9606'],
+#                                 'Taxid_Interactor_B': ['taxid:9606']},
+              
+#               'P41143_Q5JY77': {'Confidence_Values': ['-','-'],
+#                                 'Interaction_Identifiers': ['biogrid:11769',
+#                                                             'biogrid:905123'],
+#                                 'Interaction_Types': ['psi-mi:"MI:0407"(direct interaction)', 
+#                                                       'psi-mi:"MI:0407"(direct interaction)'],
+#                                 'Publication_Identifiers': ['pubmed:12142540',
+#                                                             'pubmed:15086532'],
+#                                 'Source_Database': ['psi-mi:"MI:0463"(biogrid)',
+#                                                     'psi-mi:"MI:0463"(biogrid)'],
+#                                 'Taxid_Interactor_A': ['taxid:9606',
 #                                                       'taxid:9606'],
-#                                'Taxid_Interactor_B': ['taxid:9606',
-#                                                       'taxid:9606']}
-#              }
+#                                 'Taxid_Interactor_B': ['taxid:9606',
+#                                                       'taxid:9606']},
+#               'A_B': 
+#                {'Confidence_Values': 'score:0.999690761',
+#                 'Interaction_Identifiers': 'biogrid:3044379',
+#                 'Interaction_Types': 'psi-mi:"MI:0915"(physical association)',
+#                 'Publication_Identifiers': 'pubmed:33961781',
+#                 'Source_Database': 'psi-mi:"MI:0463"(biogrid)',
+#                 'Extra_field': '123X'}
+#               }
              
+    
 # write_nested_dict(data = test_dict, 
-#                          output_file = '/home/pub/Work/data_arise_proteome/protvar/biogrid/test_dict_flattened.tsv',
-#                          delimiter = '\t',
-#                          merged_value_delimiter = ',')
+#                   output_file = "/home/pub/Work/data_ebi_protvar/test_dict_flattened.tsv", 
+#                   key_column_name="interaction_id", 
+#                   export_keys=True,
+#                   delimiter='\t', 
+#                   merged_value_delimiter=',')
 
 ###############################################################################
 ############
