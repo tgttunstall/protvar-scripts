@@ -52,19 +52,22 @@ def main():
     
     if args.verbose:
         print(f"\nReading files: '{args.files}'")
-
+        
     # Ensure common key column is present in all files
     print(f"\nChecking if '{args.key_column}' is present in files provided...")
-    if common_columns(args.files, delimiters = 'auto', force = False):
-        print(f"'{args.key_column}' is present in all files. Proceeding to generate plots...")
-    else:
-        sys.stderr.write(f"Error: Specified key column '{args.key_column}' is not common across all files.\n")
+    
+    common_cols = common_columns(args.files, delimiters = 'auto', force = False)
+    
+    if common_cols is None or args.key_column not in common_cols:
+        sys.stderr.write(f"Error: Specified key column '{args.key_column}' is not present/common across all files.\n")
         sys.exit(1)
-
-    if args.verbose:
-        print(f"\nStarting the process to read sets for plots.")
+    else:
+        print(f"'{args.key_column}' is present in files. Proceeding to generate plots...")
 
     # Extract keys from each file
+    if args.verbose:
+        print(f"\nStarting the process to read sets for plots.")
+        
     sets = [read_keys_from_file(file, args.key_column) for file in args.files]
     
     if args.verbose:
@@ -82,12 +85,12 @@ def main():
         
     # Generate and save Venn diagram
     plot_venn(*sets, labels = args.labels, plot_title = args.plot_title, output_file = args.output_file)
+    
     if args.output_file:
         print(f"\nVenn diagram saved to {args.output_file}")
     
     if args.verbose:
         print(f"\nVenn diagram successfully generated. Total elapsed time: {time() - start_time:.2f} seconds.")
-
 
 if __name__ == '__main__':
     main()
