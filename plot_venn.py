@@ -8,10 +8,12 @@ Created on Tue Jan 14 16:25:14 2025
 import argparse
 import os
 import sys
-from time import time
-#from matplotlib_venn import venn2, venn3
-#import matplotlib.pyplot as plt
-from my_pv import * # my custom functions (already imports matplotlib)
+import time
+#from time import time # does not work!
+#from my_pv import common_columns
+#from venn_functions import *
+from my_pv.pv_functions import common_columns
+from my_pv.venn_functions import read_keys_from_file, plot_venn
 
 def setup_arguments():
     """

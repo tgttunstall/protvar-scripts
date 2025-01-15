@@ -26,11 +26,18 @@ def check_column_in_file(file_path, column_name, delimiter = '\t'):
 
 def main():
     parser = argparse.ArgumentParser(description="Merge two data files with optional control over merging behavior.")
-    parser.add_argument('--input_file_list', help = 'File containing list of input files to merge, one per line. Max of 2 files')
-    #parser.add_argument('--common_col', default = 'interaction_id', help = 'Common column to use for merging (default: interaction_id).')
-    parser.add_argument('--common_col', default = None, help ='Optional common column to use for merging. If not provided, data files are concatenated.')
-    parser.add_argument('--outfile', required = True, help = 'File path for the merged output.')
-    parser.add_argument('--verbose', action = 'store_true', help = 'Enable verbose output.')
+    
+    parser.add_argument('--input_file_list', 
+                        help = 'File containing list of input files to merge, one per line. Max of 2 files')
+    parser.add_argument('--common_col', 
+                        default = None, # 'interaction_id
+                        help ='Optional common column to use for merging. If not provided, data files are concatenated.')
+    parser.add_argument('--outfile', 
+                        required = True, 
+                        help = 'File path for the merged output.')
+    parser.add_argument('--verbose', 
+                        action = 'store_true', 
+                        help = 'Enable verbose output.')
 
     args = parser.parse_args()
     

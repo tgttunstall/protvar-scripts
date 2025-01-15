@@ -17,7 +17,9 @@ from my_pv import * # my custom functions
 def setup_arguments():
     parser = argparse.ArgumentParser(description="Process BioGRID data in multiple stages.")
     
-    parser.add_argument('-s', '--stage', type = int, choices = [1, 2, 3], required = True, 
+    parser.add_argument('-s', '--stage', 
+                        type = int, choices = [1, 2, 3], 
+                        required = True, 
                         help = "Stage to execute (1, 2, or 3)")
     
     parser.add_argument('-i', '--input', 

@@ -10,15 +10,10 @@ import time
 import csv
 import re
 import pprint as pp
-import matplotlib.pyplot as plt
-from matplotlib_venn import venn2
-from matplotlib_venn import venn3
-#import pandas as pd
 from collections import defaultdict, Counter
-import time
-import csv
 import psycopg2
-from collections import defaultdict
+#import matplotlib.pyplot as plt
+#from matplotlib_venn import venn2, venn3
 ###############################################################################
 ############
 # Function: 
@@ -331,8 +326,8 @@ def write_dict_to_tsv(data, filename, include_keys = True, ordered_columns = Non
             complete_row = {field: row_data.get(field, 'N/A') for field in fieldnames}
             writer.writerow(complete_row)
 
-# Example usage
-# = {
+# Example usage:
+# data = {
 #    "001": {"pdb": "Structure1", "pdockq": 0.85, "iptm": "Modified", "sources": "Experiment", "resid1": "R100", "resid2": "K200", "extra1": "Value1"},
 #    "002": {"pdb": "Structure2", "pdockq": 0.90, "extra2": "Value2", "extra3": "Value3"}  # Including unexpected fields
 #}
@@ -392,79 +387,7 @@ def subset_dict_by_keys(input_dict, keys):
     return subset
 
 # Example usage
-
 #a = subset_dict_by_keys(ex2D, [0,1])
-###############################################################################
-############
-# Function: 
-############
-def read_keys_from_file(file_path, column_name):
-    """
-    Reads a file and extracts a set of unique values from a specified column.
-    Used for Venn Diagram plotting primarily.
-
-    Args:
-        file_path (str): Path to the file to read.
-        column_name (str): Name of the column from which to extract unique values.
-
-    Returns:
-        set: A set of unique values from the specified column.
-    """
-    unique_values = set()
-    try:
-        with open(file_path, mode='r', newline='') as file:
-            reader = csv.DictReader(file, delimiter='\t')  # Adjust delimiter if necessary
-            for row in reader:
-                if column_name in row and row[column_name] != 'N/A':
-                    unique_values.add(row[column_name])
-    except FileNotFoundError:
-        sys.exit(f"Error: File not found {file_path}")
-    except KeyError:
-        sys.exit(f"Error: Column {column_name} not found in file {file_path}")
-    return unique_values
-
-############
-# Function: 
-############
-def plot_venn(*sets, labels = None, plot_title = 'Venn Diagram of Sets', output_file = None):
-    """
-    Plots a Venn diagram for two or three sets.
-    
-    Args:
-        *sets: Variable number of set arguments.
-        labels (list of str, optional): Labels for the sets in the Venn diagram. Must match the number of sets if provided.
-        plot_title (str): Title of the plot.
-        output_file (str, optional): Path to save the output file. If None, the plot is not saved.
-    """
-    
-    if len(sets) not in [2, 3]:
-        sys.exit("Error: Venn diagrams can only be plotted for two or three sets.")
-    
-    if labels and len(labels) != len(sets):
-        sys.exit(f"Error: Number of labels {len(labels)} does not match number of sets {len(sets)}.")
-    
-    plt.figure(figsize=(8, 8))
-    if len(sets) == 2:
-        venn2(sets, labels)
-    elif len(sets) == 3:
-        venn3(sets, labels)
-    plt.title(plot_title)
-    
-    if output_file:
-        plt.savefig(output_file)  # Save the plot to the specified file
-        print(f"Plot saved to {output_file}")
-    
-    plt.show()  # Display the plot
-
-
-# Example usage
-#set1 = {'a', 'b', 'c', 'd'}
-#set2 = {'b', 'c', 'e'}
-#set3 = {'c', 'd', 'e', 'f'}
-
-#plot_venn(set1, set2, set3, 
-#          labels = ['Group 1', 'Group 2', 'Group 3'], 
-#          plot_title = 'Sample Venn Diagram')
 ###############################################################################
 ############
 # Function: 
@@ -504,10 +427,10 @@ def read_file_to_list_of_dicts(filename):
         data_list = [row for row in reader]  # List comprehension to collect all data rows
     return data_list
 
-# Usage
+# Example Usage
 #filename = '/home/pub/Work/data_arise_proteome/protvar/biogrid/sample_biogrid.txt'
 #data_list = read_file_to_list_of_dicts(filename)
-#pp.pprint(data_list[0])  # Print the first record to 
+#pp.pprint(data_list[0])  # Print the first record 
 ###############################################################################
 ############
 # Function: 
@@ -531,19 +454,7 @@ def extract_ids(data_list):
                       will contain the extracted ID if found, or 'N/A' if not found.
     
     Example:
-        input_data = [
-            {'Alt_IDs_Interactor_A': 'uniprot/swiss-prot:P12345|refseq:NP_123456',
-             'Alt_IDs_Interactor_B': 'uniprot/swiss-prot:P23456|refseq:NP_234567'},
-            {'Alt_IDs_Interactor_A': 'uniprot/swiss-prot:P34567',
-             'Alt_IDs_Interactor_B': 'refseq:NP_345678'}
-        ]
-        extracted_data = extract_ids(input_data)
-        for entry in extracted_data:
-            print(entry['uniprot_id1'], entry['refseq_id1'], entry['uniprot_id2'], entry['refseq_id2'])
-    
-        Output:
-            P12345 NP_123456 P23456 NP_234567
-            P34567 N/A N/A NP_345678
+       
     
     This function is particularly useful in bioinformatics for preprocessing data to isolate identifier information
     for further analysis or database integration.
@@ -579,12 +490,20 @@ def extract_ids(data_list):
     return data_list
 
 # Example usage
-# Assuming `data_list` is list of dictionaries from the BioGRID data
-#updated_data_list = extract_and_combine_ids(data_list)
+# input_data = [
+#      {'Alt_IDs_Interactor_A': 'uniprot/swiss-prot:P12345|refseq:NP_123456',
+#       'Alt_IDs_Interactor_B': 'uniprot/swiss-prot:P23456|refseq:NP_234567'},
+#      {'Alt_IDs_Interactor_A': 'uniprot/swiss-prot:P34567',
+#       'Alt_IDs_Interactor_B': 'refseq:NP_345678'}
+#  ]
+# extracted_data = extract_ids(input_data)
 
-# Print the first few updated entries to verify
-#for entry in updated_data_list[:5]:
-#    pp.pprint(entry)
+# for entry in extracted_data:
+#     print(entry['uniprot_id1'], entry['refseq_id1'], entry['uniprot_id2'], entry['refseq_id2'])
+    
+# Output:
+#P12345 NP_123456 P23456 NP_234567
+#P34567 N/A N/A NP_345678
 ###############################################################################
 ############
 # Function: 
@@ -677,7 +596,7 @@ def dict_value_merge(input_file, key_column = 'interaction_id', selected_columns
     # Convert defaultdict to dict for return
     return dict(merged_data), dict(merge_counts)
 
-# Usage example:
+# Example usage:
 #infile = '/home/pub/Work/data_arise_proteome/protvar/biogrid/updated_sample_biogrid_PVDB.tsv'
 #key_column = 'interaction_id'
 # my_cols = ['Publication_Identifiers',
@@ -704,7 +623,6 @@ def dict_value_merge(input_file, key_column = 'interaction_id', selected_columns
 ############
 # Function: 
 ############            
-
 def write_nested_dict(data, output_file, delimiter = '\t', merged_value_delimiter = ','):
     """
     Writes a nested dictionary (with inner lists) to a TSV file.
@@ -732,7 +650,7 @@ def write_nested_dict(data, output_file, delimiter = '\t', merged_value_delimite
                     row[col] = values  # Write the single value directly
             writer.writerow(row)
             
-# Example usage
+# Example usage:
 # test_dict = {'A8MVS5_Q8ND76': 
 #              {'Confidence_Values': ['score:0.999690761'],
 #               'Interaction_Identifiers': ['biogrid:3044379'],
@@ -812,7 +730,7 @@ def fetch_uniprot_from_db(refseq_id, cursor):
     except Exception as e:
         print(f"Error fetching UniProt ID for RefSeq ID {refseq_id}: {e}")
         return 'error', False  # Return 'error' and False if an exception occurs.
-
+###############################################################################
 ############
 # Function: 
 ############
@@ -891,3 +809,4 @@ def process_biogrid_file(input_file, db_params):
     cursor.close()
     conn.close()
     return data, dict(debug_info)
+###############################################################################
