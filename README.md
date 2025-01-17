@@ -177,7 +177,7 @@ This is sed to generate Venn Diagrms for *AF2, Supp_ppi, and Biogrid datasets*. 
 ### Compare Suppl_ppi and Missing AF2
 
 ```
-./plot_venn.py --files $DATA_DIR/suppl_ppi_models_.tsv $DATA_DIR/af2_iptm_pdockq.tsv \
+./plot_venn.py --files $DATA_DIR/af2_iptm_pdockq.tsv $DATA_DIR/suppl_ppi_models_.tsv \
     --key_column interaction_id \
     --labels Suppl_ppi M_AF2 \
     --plot_title "Comparison of Suppl and M_AF2" \
