@@ -83,7 +83,7 @@ Files required:
 
 ### Recap: comparison of AF2 and suppl_ppi files
 ![af2_suppl](https://github.com/user-attachments/assets/a09d12f7-b0f0-4378-a2c8-250b19775e95)
-![venn_af2_suppl_ppi](https://github.com/user-attachments/assets/33c280d0-3e1f-46e2-8eb7-8f65d017bc3f)
+![venn_af2_suppl_ppi](https://github.com/user-attachments/assets/3a91b7c6-bdc0-4686-9e87-6ee39fcbb599)
 
 
 ### Step 1) Concatenate files: Files 2 and 3
