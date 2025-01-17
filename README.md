@@ -94,7 +94,7 @@ Required Data:
 `af2_iptm_pdockq.tsv`: data containing 103969 entries that were previously missing
 `suppl_ppi_models_.tsv`: file from PV
 
-**Note:** `--input_file_list` must be a textfile listing files to concatenate/merge. For this step, the list must be the two files mentioned above. DO NOT provide '--common_col' command-line argument.
+**Note:** `--input_file_list` must be a textfile listing files to concatenate/merge. For this step, the list must be the two files mentioned above. *DO NOT* provide `--common_col` command-line argument.
 
 Filenames:
 
