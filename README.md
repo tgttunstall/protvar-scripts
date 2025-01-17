@@ -89,6 +89,7 @@ Files required:
 ### Step 1) Concatenate files: Files 2 and 3
 
 ![supp_af2_receieved](https://github.com/user-attachments/assets/e798a598-dd3d-4d46-a1b6-e20a080bcc2b)
+![venn_suppl_mAF2](https://github.com/user-attachments/assets/38d22db0-9e87-4fff-809a-dce8cd634ad1)
 
 Generate an updated suppl_ppi file which includes the missing af2 entries.
 
