@@ -12,7 +12,6 @@ import argparse
 import configparser
 import time
 from my_pv import * # my custom functions
-
 ###############################################################################
 def setup_arguments():
     parser = argparse.ArgumentParser(description="Process BioGRID data in multiple stages.")

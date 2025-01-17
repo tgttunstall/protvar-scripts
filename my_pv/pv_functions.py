@@ -452,7 +452,7 @@ def extract_ids(data_list):
 ############
 # Function: 
 ############
-def write_list_of_dicts_to_tsv(data_list, output_filename):
+def write_list_of_dicts(data_list, output_filename, delimiter = "\t"):
     """
     Writes a list of dictionaries to a TSV file.
 
@@ -467,7 +467,7 @@ def write_list_of_dicts_to_tsv(data_list, output_filename):
     # Open the file for writing
     with open(output_filename, 'w', newline = '') as file:
         # Use the csv.DictWriter to handle the dictionary writing
-        writer = csv.DictWriter(file, fieldnames = data_list[0].keys(), delimiter = '\t')
+        writer = csv.DictWriter(file, fieldnames = data_list[0].keys(), delimiter = delimiter)
         
         # Write the header automatically based on the keys of the first dictionary
         writer.writeheader()
@@ -477,7 +477,7 @@ def write_list_of_dicts_to_tsv(data_list, output_filename):
 
 # Example usage
 #output_filename = 'biogrid_data.tsv'
-#write_list_of_dicts_to_tsv(updated_data_list, output_filename)
+#write_list_of_dicts(updated_data_list, output_filename, delimiter = "\t")
 
 # Example usage
 #input_file = '/home/pub/Work/data_arise_proteome/protvar/biogrid/updated_bg_human_interactions.tsv'
