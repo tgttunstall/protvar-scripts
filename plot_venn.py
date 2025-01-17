@@ -27,7 +27,7 @@ Features:
     - Handles two or three input files to generate corresponding Venn diagrams.
     - Provides error handling for missing key columns across files.
     - Automatically handles delimiter detection for CSV and TSV file formats.
-    - Supports optional verbose output for detailed operation insight.
+    - Supports optional verbose output for steps and timings involvedl.
 
 This script utilizes the 'matplotlib_venn' library to plot Venn diagrams and requires CSV files to be formatted correctly with headers.
 
