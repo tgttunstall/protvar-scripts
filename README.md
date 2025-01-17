@@ -64,7 +64,7 @@ Read step 3 output file, and perform "merging of column values" for a given inte
     ./biogrid_processing.py -s3 \
         -i $DATA_DIR/updated_bg_human_interactions_PVDB.tsv \
         -o $DATA_DIR/updated_bg_source.tsv \
-	--write_counts \
+    	--write_counts \
         --verbose
 ```
 *Stage 3 completed in 28.50 seconds*
@@ -143,6 +143,24 @@ Note that, as above, `--input_file_list` must be a file containing a list of fil
 		/full/path/updated_bg_source.tsv
   
 ```
-./pv_data_merging.py --input_file_list $DATA_DIR/input_files_updatedAF2_biogrid.txt --common_col interaction_id --outfile $DATA_DIR/af2_suppl_ppi_biogrid_combined.tsv --verbose 
+    ./pv_data_merging.py \
+     --input_file_list $DATA_DIR/input_files_updatedAF2_biogrid.txt \
+     --common_col interaction_id \
+     --outfile $DATA_DIR/af2_suppl_ppi_biogrid_combined.tsv \
+     --verbose
 ```
 *ELAPSED TIME: 32.69 seconds*
+
+## PLOT VENN DIAGRAMS
+
+**Note** Used to generate Venn Diagrms for AF2, Supp_ppi, and Biogrid datasets. These are based on 'interaction_id' column found in all the datasets used.
+
+
+### Compare AF2 and Suppl Data
+```
+    ./plot_venn.py --files $DATA_DIR/af2-models-split-ifresid_.tsv $DATA_DIR/suppl_ppi_models_.tsv \
+    --key_column interaction_id \
+    --labels AF2 Suppl_ppi \
+    --plot_title "Comparison of AF2 and Suppl" \
+    --output_file $DATA_DIR/venn_af2_suppl.png \
+    --verbose
