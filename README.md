@@ -138,6 +138,7 @@ Running script:
 
 ### Step 3) FINAL MERGE: Merge files on "interaction_id": (combined result of Files 2, 3 and 1) and File 4
 ![af2_bg_combined](https://github.com/user-attachments/assets/e162e3de-300b-432c-bfd3-58557aed29fe)
+![venn_updatedAF2_BG](https://github.com/user-attachments/assets/27b0a448-d867-4810-a3b7-37bd4e046486)
 
 **Note:** Similarly, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
  
@@ -205,8 +206,8 @@ This is sed to generate Venn Diagrms for *AF2, Supp_ppi, and Biogrid datasets*. 
 ```
 ./plot_venn.py --files $DATA_DIR/af2_suppl_ppi_combined.tsv $DATA_DIR/updated_bg_source.tsv \
     --key_column interaction_id \
-    --labels updated_AF2 BG \
-    --plot_title "Comparison of updated_AF2 and Biogrid"" \
+    --labels Updated_AF2 BG \
+    --plot_title "Comparison of updated_AF2 and Biogrid" \
     --output_file $DATA_DIR/venn_updatedAF2_BG.png \
     --verbose
 ```
