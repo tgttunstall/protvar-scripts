@@ -1,4 +1,37 @@
 #!/usr/bin/env python3
+
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Dec 30 14:25:10 2024
+
+@author: tanu
+"""
+###############################################################################
+# Merges or concatenates two data files based cmd option. 
+# It provides the flexibility to either merge the data based on a common key column (performing an inner join) 
+# or concatenate them vertically (similar to an `rbind` in R).
+
+# Example Usage: Merging Data with a Common Column 
+#    pv_data_merging.py --input_file_list file_list.txt --common_col interaction_id --outfile merged_data.tsv --verbose
+
+# Example Usage: Concatenating Data Without a Common Column
+#    pv_data_merging.py --input_file_list file_list.txt --outfile concatenated_output.tsv --verbose
+
+# Arguments:
+    
+# - `--input_file_list`: Specifies a file containing paths to two input files to be merged, one per line. Max of 2 files
+# - `--common_col`: Specifies the column to be used as a key for merging.
+#                   If not provided, the script concatenates the files.
+# - `--outfile`: Specifies the path for the merged output file.
+# - `--verbose`: Enables verbose output to provide detailed processing information including time.
+
+# Features:
+
+# - Merge Based on Common Column: If a common column is specified, the script checks for its presence in both files and merges the data based on this column.
+# - Concatenate Data: If no common column is specified, the script concatenates the data from both files row-wise.
+# - Verbose Output: Optional verbose output to track the script’s processing details and timings.
+# - Flexible Output: Allows specification of the output file path.
+###############################################################################
 import argparse
 import os
 import sys
