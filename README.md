@@ -69,6 +69,7 @@ Read step 3 output file, and perform "merging of column values" for a given inte
 ```
 *Stage 3 completed in 28.50 seconds*
 
+
 ## AF2, SUPPL_PPI, BG DATA Merging: 
 '''pv_data_merging.py''' is a script that takes as input file listing the filenames to merge.
 Output file is generated which is used in the subsequent steps before finally generating a tsv 
@@ -94,7 +95,7 @@ Required Data:
 `af2_iptm_pdockq.tsv`: data containing 103969 entries that were previously missing
 `suppl_ppi_models_.tsv`: file from PV
 
-**Note:** `--input_file_list` must be a textfile listing files to concatenate/merge. For this step, the list must be the two files mentioned above. *DO NOT* provide `--common_col` command-line argument.
+**Note:** `--input_file_list` must be a textfile listing files to concatenate/merge. For this step, the list must be the two files mentioned above. **DO NOT** provide `--common_col` command-line argument.
 
 Filenames:
 
