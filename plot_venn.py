@@ -12,7 +12,7 @@ Created on Tue Jan 14 16:25:14 2025
 # Optionally users can provide labels for each dataset and a title for the Venn diagram.
 
 # Usage:
-#    python plot_venn.py -f FILE1.tsv FILE2.tsv [--labels Label1 Label2] --key_column ColumnName [-t "Custom Title"] [--output_file "output.png"] [--verbose]
+#    plot_venn.py -f FILE1.tsv FILE2.tsv [--labels Label1 Label2] --key_column ColumnName [-t "Custom Title"] [--output_file "output.png"] [--verbose]
 
 # Arguments:
 #     -f, --files: List of paths to input files.
@@ -31,7 +31,7 @@ Created on Tue Jan 14 16:25:14 2025
 # This script utilises the 'matplotlib_venn' library to plot Venn diagrams and requires CSV files to be formatted correctly with headers.
 
 # Example Command:
-#    python plot_venn.py -f data1.csv data2.csv data3.csv --key_column "ID" --labels "Data Set 1" "Data Set 2" "Data Set 3" -t "Comparison of IDs" --verbose
+#    plot_venn.py -f data1.csv data2.csv data3.csv --key_column "ID" --labels "Data Set 1" "Data Set 2" "Data Set 3" -t "Comparison of IDs" --verbose
 
 ###############################################################################
 import argparse
