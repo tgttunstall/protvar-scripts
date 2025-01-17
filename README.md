@@ -137,7 +137,6 @@ Running script:
 
 ### Step 3) FINAL MERGE: Merge files on "interaction_id": (combined result of Files 2, 3 and 1) and File 4
 ![venn_updatedAF2_BG](https://github.com/user-attachments/assets/27b0a448-d867-4810-a3b7-37bd4e046486)
-![venn_updatedAF2_BG2](https://github.com/user-attachments/assets/7cb5633c-57f7-43c1-b504-5f138c8c38c6)
 
 **Note:** Similarly, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
  
@@ -228,4 +227,4 @@ This is sed to generate Venn Diagrms for *AF2, Supp_ppi, and Biogrid datasets*. 
 
 **NOTE:** Sanity check of Venn Diagram of all 3 sets. The common number should be the same as the result of final merge.
 
-![test2](https://github.com/user-attachments/assets/4e470bd6-ca7f-4571-b401-1d43d13ae8d0)
+![venn3_af2_suppl_bg](https://github.com/user-attachments/assets/db96cf68-45c1-4a72-be39-8dd3859e993f)
