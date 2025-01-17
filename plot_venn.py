@@ -33,12 +33,15 @@ Created on Tue Jan 14 16:25:14 2025
 # Example Command:
 #    plot_venn.py -f data1.csv data2.csv data3.csv --key_column "ID" --labels "Data Set 1" "Data Set 2" "Data Set 3" -t "Comparison of IDs" --verbose
 
+# Custom functions imported are clearly indicated in the imports
 ###############################################################################
 import argparse
 import os
 import sys
 import time
 #from time import time # does not work!
+
+# custom functions
 #from my_pv import common_columns
 #from venn_functions import *
 from my_pv.pv_functions import common_columns

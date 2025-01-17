@@ -31,6 +31,9 @@ Created on Mon Dec 30 14:25:10 2024
 # - Concatenate Data: If no common column is specified, the script concatenates the data from both files row-wise.
 # - Verbose Output: Optional verbose output to track the script’s processing details and timings.
 # - Flexible Output: Allows specification of the output file path.
+
+# Custom functions imported are clearly indicated in the imports
+
 ###############################################################################
 import argparse
 import os
@@ -38,8 +41,10 @@ import sys
 import csv
 import time
 #from time import time
+
+# my custom functions
+#from my_pv import *
 from my_pv.pv_functions import read_file_to_dict, merge_dicts, write_nested_dict, subset_dict_of_dicts
-#from my_pv import * # my custom functions
 ###############################################################################
 ############
 # Function: 

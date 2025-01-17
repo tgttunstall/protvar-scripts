@@ -6,12 +6,36 @@ Created on Fri Dec 20 14:10:38 2024
 @author: tanu
 """
 ###############################################################################
+# Process interaction data from the BioGRID database through multiple stages,
+# Each stage of the script serves a specific purpose:
+
+# Stage 1: Extracts and processes UniProt and RefSeq IDs from the given input file, updating the data accordingly
+# and writing the results to an output file specified by the user.
+
+# Stage 2: Connects to a PostgreSQL database to fetch missing UniProt IDs based on RefSeq IDs present in the input file.
+# The script updates these IDs in the data, optionally generating a tracking dict to capture details of the data modifications.
+
+# Stage 3: Merges columns of data based on user-specified criteria, facilitating the consolidation of interaction data
+# across different datasets. This stage also supports the generation of tracking information regarding the merge operations.
+
+# The script is controlled via command-line arguments, enabling users to specify the stage, input and output files,
+# database configurations, and other options such as verbose logging and tracking data output.
+
+# Usage of this script requires a proper setup of the Python environment with necessary dependencies installed,
+# and appropriate database access configurations for fetching UniProt IDs.
+# Custom functions imported are clearly indicated in the imports
+
+# Example usage:
+#     python this_script.py -s 1 -i 'input_file.tsv' -o 'output_file.tsv' --verbose
+###############################################################################
 import os
 import sys
 import argparse
 import configparser
 import time
-#from my_pv import * # my custom functions
+
+# my custom functions
+#from my_pv import *
 from my_pv.pv_functions import read_file_to_list_of_dicts, extract_ids, process_biogrid_file, dict_value_merge
 from my_pv.pv_functions import write_list_of_dicts, write_nested_dict
 ###############################################################################
