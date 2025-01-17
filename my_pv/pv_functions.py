@@ -659,51 +659,63 @@ def write_nested_dict(data,
 ############
 # Function: 
 ############
-def fetch_uniprot_from_db(refseq_id, cursor):
+def fetch_uniprot_from_db(refseq_id, cursor, verbose = False):
     """
-    Fetch the UniProt ID associated with a given RefSeq ID from the database.
+    Fetches the UniProt ID associated with a given RefSeq ID from the database.
     
-    This function executes a SQL query to retrieve the UniProt accession number
-    for a specified RefSeq ID. It handles multiple possible outcomes: no matching UniProt ID,
-    a single UniProt ID, or multiple UniProt IDs. In cases where multiple IDs are found,
-    it logs a message and returns the first one.
+    Executes a SQL query to retrieve the UniProt accession number for a specified RefSeq ID.
+    Handles multiple possible outcomes: no matching UniProt ID, a single UniProt ID, or multiple UniProt IDs.
+    In cases where multiple IDs are found, it logs a message and returns the first one.
     
     Parameters:
     - refseq_id (str): The RefSeq ID for which the UniProt ID is to be fetched.
-    - cursor (Cursor): A database cursor object used to execute the query.
+    - cursor (Cursor object): A database cursor object from a connection pool used to execute the query.
+    - verbose (bool): If True, additional debug information will be printed. Default is False.
     
     Returns:
     - tuple:
-        - str: The UniProt ID if found, 'N/A*' if no match is found, 'error' if an exception occurs.
+        - str: The UniProt ID if found, 'N/A' if no match is found, 'N/A' if an error occurs.
         - bool: True if multiple UniProt IDs were found for the RefSeq ID, False otherwise.
-    
-    Exceptions:
-    - Raises an exception and prints an error message if the database query fails.
+        - bool: True if an exception occurs during database query execution, False otherwise.
     
     Usage Example:
     >>> cursor = db_connection.cursor()
-    >>> fetch_uniprot_from_db('NP_00001', cursor)
-    ('P12345', False)  # Example of a single match
+    >>> uni_id, multiple, error = fetch_uniprot_from_db('NP_00001', cursor, verbose=True)
+    If no error:
+        if multiple:
+            print("Multiple IDs found, first one selected.")
+        else:
+            print("Single ID found.")
+    else:
+        print("Error fetching data.")
+
+    Note:
+    This function is primarily used within process_biogrid_file() to fetch UniProt IDs based on RefSeq IDs
     
-    It is primarly used by the process_biogrid_file() to get the ids
     """
     
     try:
-        #query = f"SELECT uniprot_acc FROM uniprot_refseq WHERE refseq_acc = '{refseq_id}'"
-        query = f"SELECT uniprot_acc FROM uniprot_refseq WHERE refseq_acc LIKE '{refseq_id}%'"
+        query = f"SELECT uniprot_acc FROM uniprot_refseq WHERE refseq_acc = '{refseq_id}'"
         cursor.execute(query)
         results = cursor.fetchall()
         if not results:
-            print(f"No UniProt ID found for RefSeq ID: {refseq_id}")
-            #return 'not_in_pv_db', False
-            return 'N/A*', False
+            if verbose:
+                print(f"No UniProt ID found for RefSeq ID: {refseq_id}")
+            return 'N/A', False, False  # No UniProt ID found
         elif len(results) > 1:
-            print(f"Multiple UniProt IDs found for RefSeq ID: {refseq_id}, selecting the first one.")
-            return results[0][0], True  # Return the first result but indicate multiple were found.
-        return results[0][0], False
+            if verbose:
+                print(f"Multiple UniProt IDs found for RefSeq ID: {refseq_id}, selecting the first one.")
+                print(f"UniProt ID selected: {results[0][0]}")  # Log the UniProt ID that was selected
+            return results[0][0], True, False  # Multiple UniProt IDs found, selecting the first one
+        if verbose:
+            print(f"UniProt ID found and selected: {results[0][0]}")  # Log the successful UniProt ID fetch
+        
+        return results[0][0], False, False  # Single UniProt ID found        
+
     except Exception as e:
-        print(f"Error fetching UniProt ID for RefSeq ID {refseq_id}: {e}")
-        return 'error', False  # Return 'error' and False if an exception occurs.
+        if verbose:
+            print(f"Database query error: {e}")
+        return 'N/A', False, True  # Error occurred
 ###############################################################################
 ############
 # Function: 
@@ -720,15 +732,19 @@ def process_biogrid_file(input_file, db_params):
     any rows where updates occur and whether multiple potential UniProt IDs were found for single RefSeq IDs.
 
     Parameters:
-    - input_file (str): The path to the BioGRID TSV file to be processed.
+    - input_file (str): Path to the BioGRID TSV file to be processed.
     - db_params (dict): A dictionary containing database connection parameters such as host, database name,
                         user, and password. This is used to establish a connection to the PostgreSQL database.
 
     Returns:
-    - tuple:
+    tuple:
         - list: A list of dictionaries, each representing a row from the input file with updated UniProt IDs.
-        - dict: A dictionary where keys are row indices (1-indexed) and values are lists of strings describing
-                the updates or actions taken for each row, e.g., 'multiple_uniprot_for_refseq1'.
+        - dict: A dictionary where keys are row indices (1-indexed) and values are dictionaries.
+            Each dictionary contains detailed debug information for actions taken during processing such as:
+                updates made (i.e whether DB was looked up successfully), 
+                the RefSeq ID used for updates,
+                whether multiple potential UniProt IDs were found, 
+                and any errors encountered.
 
     Processes the file by:
     - Connecting to the PostgreSQL database using the provided db_params.
@@ -747,40 +763,55 @@ def process_biogrid_file(input_file, db_params):
     cursor = conn.cursor()
 
     data = []
-    debug_info = defaultdict(list)
+    debug_info = defaultdict(lambda: defaultdict(list))
 
-    with open(input_file, 'r', newline = '') as file:
-        reader = csv.DictReader(file, delimiter = '\t')
-        for idx, row in enumerate(reader):
-            #updated = False
-            #print(f"Processing row {idx + 1}")
-            
+    with open(input_file, 'r', newline='') as file:
+        reader = csv.DictReader(file, delimiter='\t')
+        for idx, row in enumerate(reader, start=1):
+            updated = False
+
+            # Process UniProt ID 1, Set verbose = False if it is too much
             if row['uniprot_id1'] == 'N/A' and row['refseq_id1'] != 'N/A':
-                new_id, multiple = fetch_uniprot_from_db(row['refseq_id1'], cursor)
-                if multiple:
-                    debug_info[idx + 1].append('multiple_uniprot_for_refseq1')
-                row['uniprot_id1'] = new_id
-                #updated = True
-                debug_info[idx + 1].append('up1_updated')
+                print("\nRetrieving missing uniprot_id1 from the database...")
+                new_id, multiple, error = fetch_uniprot_from_db(row['refseq_id1'], 
+                                                                cursor, 
+                                                                verbose = True)
+                if not error:
+                    row['uniprot_id1'] = new_id
+                    debug_info[idx]['action'].append('up1_from_database')
+                    debug_info[idx]['refseq_used'].append(row['refseq_id1'])
+                    debug_info[idx]['multiple_hits'].append(multiple)
+                    debug_info[idx]['new_uniprot_id'].append(new_id)
+                    updated = True
 
-
+            # Process UniProt ID 2, Set verbose = False if it is too much
             if row['uniprot_id2'] == 'N/A' and row['refseq_id2'] != 'N/A':
-                new_id, multiple = fetch_uniprot_from_db(row['refseq_id2'], cursor)
-                if multiple:
-                    debug_info[idx + 1].append('multiple_uniprot_for_refseq2')
-                row['uniprot_id2'] = new_id
-                #updated = True
-                debug_info[idx + 1].append('up1_updated')
+                print("\nRetrieving missing uniprot_id2 from the database...")
 
-            # if updated:
-            #     print(f"Updated UniProt IDs in row {idx + 1}")
-            #     debug_info[idx + 1].append('updated')
-            # row['interaction_id'] = f"{row['uniprot_id1']}_{row['uniprot_id2']}"
-            # data.append(row)
-            row['interaction_id'] = f"{row['uniprot_id1']}_{row['uniprot_id2']}"
+                new_id, multiple, error = fetch_uniprot_from_db(row['refseq_id2'], 
+                                                                cursor, 
+                                                                verbose = True)
+                if not error:
+                    row['uniprot_id2'] = new_id
+                    debug_info[idx]['action'].append('up2_from_database')
+                    debug_info[idx]['refseq_used'].append(row['refseq_id2'])
+                    debug_info[idx]['multiple_hits'].append(multiple)
+                    debug_info[idx]['new_uniprot_id'].append(new_id)
+                    updated = True
+                    
+
+            # Record the interaction_id in debug_info if any updates were made
+            interaction_id = f"{row['uniprot_id1']}_{row['uniprot_id2']}"
+
+            if updated:
+                debug_info[idx]['interaction_id_created'] = interaction_id
+            
+            # Include all rows (unlike tracking dict)  
+            row['interaction_id'] = interaction_id
             data.append(row)
-
+                
     cursor.close()
     conn.close()
     return data, dict(debug_info)
+
 ###############################################################################

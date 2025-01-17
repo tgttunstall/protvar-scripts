@@ -11,7 +11,9 @@ import sys
 import argparse
 import configparser
 import time
-from my_pv import * # my custom functions
+#from my_pv import * # my custom functions
+from my_pv.pv_functions import read_file_to_list_of_dicts, extract_ids, process_biogrid_file, dict_value_merge
+from my_pv.pv_functions import write_list_of_dicts, write_nested_dict
 ###############################################################################
 def setup_arguments():
     parser = argparse.ArgumentParser(description="Process BioGRID data in multiple stages.")
@@ -59,7 +61,8 @@ def run_stage1(input_file, output_file, verbose):
     
     data_list = read_file_to_list_of_dicts(input_file)
     updated_data_list = extract_ids(data_list)
-    write_list_of_dicts_to_tsv(updated_data_list, output_file)
+    #write_list_of_dicts_to_tsv(updated_data_list, output_file)
+    write_list_of_dicts(updated_data_list, output_file, delimiter = "\t")
     
     if verbose:
         print(f"Input file: {input_file}")
@@ -76,8 +79,22 @@ def run_stage2(input_file, output_file, config_path, verbose):
 
     start_time = time.time()
     final_data, tracking_dict = process_biogrid_file(input_file, db_params)
-    write_list_of_dicts_to_tsv(final_data, output_file)  
+    #write_list_of_dicts_to_tsv(final_data, output_file)  
+    
+    # Write data with missing uniprot IDs retrieved from DB 
+    write_list_of_dicts(final_data, output_file, delimiter = "\t" )  
+
     #OPTIONAL: you can write out the tracking dict
+    dirname, fname = os.path.split(output_file)
+    tracking_filename = os.path.join(dirname, os.path.splitext(fname)[0] + '_tracking_info_db.tsv')
+    print("Writing tracking dict t: {tracking_filename}")
+          
+    write_nested_dict(data = tracking_dict, 
+                       output_file = tracking_filename,
+                       key_column_name = "Index", 
+                       export_keys = True,
+                       delimiter = '\t', 
+                       merged_value_delimiter = ',')
 
     if verbose:
         print(f"Input file: {input_file}")
@@ -104,7 +121,6 @@ def run_stage3(input_file, output_file, verbose, write_counts):
                                                                  key_column = 'interaction_id',
                                                                  selected_columns = cols_for_value_merge)
 
-
     # write_nested_dict(data = value_merged_bg_data,
     #                   output_file = output_file,
     #                   delimiter = '\t',
@@ -120,25 +136,19 @@ def run_stage3(input_file, output_file, verbose, write_counts):
     
     print(f"Data with merged values written to: {output_file}")
 
-    # Optionally write tracking information if the flag is set  
+    # OPTIONAL: write tracking information if the flag is set  
     if write_counts:
         print("Writing tracking dict with counts as well...")
         dirname, fname = os.path.split(output_file)
         counts_filename = os.path.join(dirname, os.path.splitext(fname)[0] + '_COUNTS.tsv')
-        # write_nested_dict(data = value_merged_counts,
-        #                   output_file = counts_filename,
-        #                   delimiter = '\t',
-        #                   merged_value_delimiter = ',')
         
+        print(f"Tracking counts written to: {counts_filename}")
         write_nested_dict(data = value_merged_counts, 
                           output_file = counts_filename, 
                           key_column_name = "interaction_id", 
                           export_keys = True,
                           delimiter = '\t', 
                           merged_value_delimiter = ',')
-
-        if verbose:
-            print(f"Tracking counts written to: {counts_filename}")
 
     if verbose:
         print(f"Input file: {input_file}")
