@@ -115,7 +115,7 @@ Running script:
 ### Step 2) Merge files on "interaction_id": File 1 and combined result of (Files 2 and 3)
 ![af2_updated_suppl](https://github.com/user-attachments/assets/4116549a-4085-48be-beed-048b381c4363)
 
-**Note: ** As above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
+**Note:** As above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
 
 		## af2-models-split-ifresid_.tsv file from PV
 		## updated_suppl_ppi.tsv output of Step 1
@@ -138,8 +138,7 @@ Running script:
 ### Step 3) FINAL MERGE: Merge files on "interaction_id": (combined result of Files 2, 3 and 1) and File 4
 ![af2_bg_combined](https://github.com/user-attachments/assets/e162e3de-300b-432c-bfd3-58557aed29fe)
 
-**Note: ** 
-    Similarly, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
+**Note:** Similarly, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
 
         ## af2_suppl_ppi_combined.tsv output of Step 2
 		## updated_bg_source.tsv output stage 3 of biogrid processing (biogrid_processing.py -s3)
