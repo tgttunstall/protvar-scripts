@@ -224,6 +224,7 @@ This is sed to generate Venn Diagrms for *AF2, Supp_ppi, and Biogrid datasets*. 
     --output_file $DATA_DIR/venn3_af2_suppl_bg.png \
     --verbose
 ```
-**NOTE:**Sanity check of Venn Diagram of all 3 sets. The common number should be the same as the result of final merge.
+
+**NOTE:** Sanity check of Venn Diagram of all 3 sets. The common number should be the same as the result of final merge.
 
 ![venn3_af2_suppl_bg](https://github.com/user-attachments/assets/9d866cd6-40da-4a2e-b667-12657af74be7)
