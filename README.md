@@ -61,7 +61,7 @@ Files required:
 Read step 3 output file, and perform "merging of column values" for a given interaction id, since biogrid data has 1:many relationship for a given interaction_id.
 
 ```
-    ./biogrid_processing.py -s3 \
+./biogrid_processing.py -s3 \
         -i $DATA_DIR/updated_bg_human_interactions_PVDB.tsv \
         -o $DATA_DIR/updated_bg_source.tsv \
     	--write_counts \
@@ -106,7 +106,7 @@ Filenames:
 Running script:
 
 ```
-    ./pv_data_merging.py --input_file_list $DATA_DIR/input_files_suppl_mAF2.txt \
+./pv_data_merging.py --input_file_list $DATA_DIR/input_files_suppl_mAF2.txt \
      --outfile $DATA_DIR/updated_suppl_ppi.tsv \
      --verbose 
 ```
@@ -128,7 +128,7 @@ Running script:
 Running script:
 
 ```
- 	./pv_data_merging.py --input_file_list $DATA_DIR/input_files_AF2_updatedSuppl.txt \
+./pv_data_merging.py --input_file_list $DATA_DIR/input_files_AF2_updatedSuppl.txt \
  	 --common_col interaction_id \
  	 --outfile $DATA_DIR/af2_suppl_ppi_combined.tsv \
  	 --verbose
@@ -151,7 +151,7 @@ Running script:
 Running script:
 
 ```
-    ./pv_data_merging.py \
+./pv_data_merging.py \
      --input_file_list $DATA_DIR/input_files_updatedAF2_biogrid.txt \
      --common_col interaction_id \
      --outfile $DATA_DIR/af2_suppl_ppi_biogrid_combined.tsv \
@@ -165,7 +165,7 @@ This is sed to generate Venn Diagrms for *AF2, Supp_ppi, and Biogrid datasets*. 
 
 ### Compare AF2 and Suppl Data
 ```
-    ./plot_venn.py --files $DATA_DIR/af2-models-split-ifresid_.tsv $DATA_DIR/suppl_ppi_models_.tsv \
+./plot_venn.py --files $DATA_DIR/af2-models-split-ifresid_.tsv $DATA_DIR/suppl_ppi_models_.tsv \
     --key_column interaction_id \
     --labels AF2 Supp_ppi \
     --plot_title "Comparison of AF2 and Supp_ppi" \
@@ -187,7 +187,7 @@ This is sed to generate Venn Diagrms for *AF2, Supp_ppi, and Biogrid datasets*. 
 ### Compare Updated Suppl_ppi and AF2
 
 ```
-    ./plot_venn.py --files $DATA_DIR/updated_suppl_ppi.tsv $DATA_DIR/af2-models-split-ifresid_.tsv \
+./plot_venn.py --files $DATA_DIR/updated_suppl_ppi.tsv $DATA_DIR/af2-models-split-ifresid_.tsv \
     --key_column interaction_id \
     --labels Updated_Suppl AF2  \
     --plot_title "Comparison of updated_Suppl and AF2" \
@@ -202,7 +202,7 @@ This is sed to generate Venn Diagrms for *AF2, Supp_ppi, and Biogrid datasets*. 
 ### Compare combined AF2_suppl_ppi and Biogrid
 
 ```
-    ./plot_venn.py --files $DATA_DIR/af2_suppl_ppi_combined.tsv $DATA_DIR/updated_bg_source.tsv \
+./plot_venn.py --files $DATA_DIR/af2_suppl_ppi_combined.tsv $DATA_DIR/updated_bg_source.tsv \
     --key_column interaction_id \
     --labels updated_AF2 BG \
     --plot_title "Comparison of updated_AF2 and Biogrid"" \
@@ -218,9 +218,9 @@ This is sed to generate Venn Diagrms for *AF2, Supp_ppi, and Biogrid datasets*. 
 
 ```
 ./plot_venn.py --files $DATA_DIR/updated_suppl_ppi.tsv $DATA_DIR/af2-models-split-ifresid_.tsv $DATA_DIR/updated_bg_source.tsv \
---key_column interaction_id \
---labels updatedSuppl AF2 BG  \
---plot_title "Comparison of updated_Suppl_ppi, AF2 and Biogrid" \
---output_file $DATA_DIR/venn3_af2_suppl_bg.png \
---verbose
+    --key_column interaction_id \
+    --labels updatedSuppl AF2 BG  \
+    --plot_title "Comparison of updated_Suppl_ppi, AF2 and Biogrid" \
+    --output_file $DATA_DIR/venn3_af2_suppl_bg.png \
+    --verbose
 ```
