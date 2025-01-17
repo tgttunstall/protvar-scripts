@@ -117,14 +117,14 @@ Running script:
 
 **Note:** As above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
 
-		## af2-models-split-ifresid_.tsv file from PV
-		## updated_suppl_ppi.tsv output of Step 1
-		These two files, one on each line == INPUT for script 
-
 	  	Filenames:
 		/full/path/af2-models-split-ifresid_.tsv
 		/full/path/updated_suppl_ppi.tsv
-
+		
+		## af2-models-split-ifresid_.tsv file from PV
+        	## updated_suppl_ppi.tsv output of Step 1
+        	These two files, one on each line == INPUT for script
+        	
 Running script:
 
 ```
@@ -139,14 +139,14 @@ Running script:
 ![af2_bg_combined](https://github.com/user-attachments/assets/e162e3de-300b-432c-bfd3-58557aed29fe)
 
 **Note:** Similarly, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
-
-        ## af2_suppl_ppi_combined.tsv output of Step 2
-		## updated_bg_source.tsv output stage 3 of biogrid processing (biogrid_processing.py -s3)
-		These two files, one on each line == INPUT for script
  
 		Filenames:
 		/full/path/af2_suppl_ppi_combined.tsv
-		/full/path/updated_bg_source.tsv
+		/full/path/updated_bg_source.tsv	
+		
+        ## af2_suppl_ppi_combined.tsv output of Step 2
+		## updated_bg_source.tsv output stage 3 of biogrid processing (biogrid_processing.py -s3)
+		These two files, one on each line == INPUT for script
   
 Running script:
 
