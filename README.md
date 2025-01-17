@@ -181,7 +181,7 @@ This is sed to generate Venn Diagrms for *AF2, Supp_ppi, and Biogrid datasets*. 
     --key_column interaction_id \
     --labels M_AF2 Suppl_ppi \
     --plot_title "Comparison of M_AF2 and Suppl_ppi" \
-    --output_file $DATA_DIR/venn_MAF2_suppl_ppi.png \
+    --output_file $DATA_DIR/venn_mAF2_suppl_ppi.png \
     --verbose
 ```
     
