@@ -5,6 +5,36 @@ Created on Tue Jan 14 16:25:14 2025
 
 @author: tanu
 """
+###############################################################################
+"""
+Generates Venn Diagrams for two or three data sets based on a specified key column which should be common across the datasets.
+It accepts multiple file paths, extracts unique identifiers from each file based on a specified key column, 
+and plots a Venn diagram to visually represent the overlap among these sets.
+Optionally users can provide labels for each dataset and a title for the Venn diagram.
+
+Usage:
+    python plot_venn.py -f FILE1.tsv FILE2.tsv [--labels Label1 Label2] --key_column ColumnName [-t "Custom Title"] [--output_file "output.png"] [--verbose]
+
+Arguments:
+    -f, --files: List of paths to input files.
+    --key_column: The column name to extract keys for Venn diagram
+    --labels: Optional labels for each set in the Venn diagram. If omitted, default labels ("Set 1", "Set 2", etc.) will be generated.
+    -t, --plot_title: Optional title for the Venn diagram. Default is 'Venn Diagram of Sets'.
+    --output_file: Path to save the generated Venn diagram image. Default is 'output_venn.png'.
+    --verbose: Optional Prints detailed logs about the script's execution, including timings.
+
+Features:
+    - Handles two or three input files to generate corresponding Venn diagrams.
+    - Provides error handling for missing key columns across files.
+    - Automatically handles delimiter detection for CSV and TSV file formats.
+    - Supports optional verbose output for detailed operation insight.
+
+This script utilizes the 'matplotlib_venn' library to plot Venn diagrams and requires CSV files to be formatted correctly with headers.
+
+Example Command:
+    python plot_venn.py -f data1.csv data2.csv data3.csv --key_column "ID" --labels "Data Set 1" "Data Set 2" "Data Set 3" -t "Comparison of IDs" --verbose
+"""
+###############################################################################
 import argparse
 import os
 import sys
@@ -14,7 +44,7 @@ import time
 #from venn_functions import *
 from my_pv.pv_functions import common_columns
 from my_pv.venn_functions import read_keys_from_file, plot_venn
-
+###############################################################################
 def setup_arguments():
     """
     Sets up command line arguments for the script.
