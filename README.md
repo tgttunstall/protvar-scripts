@@ -82,7 +82,7 @@ Files required:
 - *af2_iptm_pdockq.tsv*
 
 ### Recap: comparison of AF2 and suppl_ppi files
-![venn_af2_suppl_ppi](https://github.com/user-attachments/assets/6ffde06b-527d-4a7f-b92f-72180852effc)
+![af2_suppl](https://github.com/user-attachments/assets/a09d12f7-b0f0-4378-a2c8-250b19775e95)
 
 
 ### Step 1) Concatenate files: Files 2 and 3
