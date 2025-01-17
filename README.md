@@ -94,27 +94,28 @@ Required Data:
 `af2_iptm_pdockq.tsv`: data containing 103969 entries that were previously missing
 `suppl_ppi_models_.tsv`: file from PV
 
-**Note** `--input_file_list` must be a textfile listing files to concatenate/merge. For this step, the list must be the two files mentioned above. DO NOT provide '--common_col' command-line argument.
+**Note:** `--input_file_list` must be a textfile listing files to concatenate/merge. For this step, the list must be the two files mentioned above. DO NOT provide '--common_col' command-line argument.
 
-Example:
+Filenames:
 
 ```
 /full/path/suppl_ppi_models_.tsv
 /full/path/af2_iptm_pdockq.tsv
 ```
 
-Running the script.
+Running script:
 
-Example:
 ```
-./pv_data_merging.py --input_file_list $DATA_DIR/input_files_suppl_mAF2.txt --outfile $DATA_DIR/updated_suppl_ppi.tsv --verbose 
+    ./pv_data_merging.py --input_file_list $DATA_DIR/input_files_suppl_mAF2.txt \
+     --outfile $DATA_DIR/updated_suppl_ppi.tsv \
+     --verbose 
 ```
 *ELAPSED TIME: 4.60 seconds*
 
 ### Step 2) Merge files on "interaction_id": File 1 and combined result of (Files 2 and 3)
 ![af2_updated_suppl](https://github.com/user-attachments/assets/4116549a-4085-48be-beed-048b381c4363)
 
-Note that, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
+**Note: ** As above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
 
 		## af2-models-split-ifresid_.tsv file from PV
 		## updated_suppl_ppi.tsv output of Step 1
@@ -124,15 +125,20 @@ Note that, as above, `--input_file_list` must be a file containing a list of fil
 		/full/path/af2-models-split-ifresid_.tsv
 		/full/path/updated_suppl_ppi.tsv
 
+Running script:
+
 ```
- 	./pv_data_merging.py --input_file_list $DATA_DIR/input_files_AF2_updatedSuppl.txt --common_col interaction_id --outfile $DATA_DIR/af2_suppl_ppi_combined.tsv --verbose 
+ 	./pv_data_merging.py --input_file_list $DATA_DIR/input_files_AF2_updatedSuppl.txt \
+ 	 --common_col interaction_id \
+ 	 --outfile $DATA_DIR/af2_suppl_ppi_combined.tsv \
+ 	 --verbose
 ```
 *ELAPSED TIME: 62.67 seconds*
 
 ### Step 3) FINAL MERGE: Merge files on "interaction_id": (combined result of Files 2, 3 and 1) and File 4
 ![af2_bg_combined](https://github.com/user-attachments/assets/e162e3de-300b-432c-bfd3-58557aed29fe)
 
-Note that, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
+**Note: ** Similarly, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
 
         ## af2_suppl_ppi_combined.tsv output of Step 2
 		## updated_bg_source.tsv output stage 3 of biogrid processing (biogrid_processing.py -s3)
@@ -142,6 +148,8 @@ Note that, as above, `--input_file_list` must be a file containing a list of fil
 		/full/path/af2_suppl_ppi_combined.tsv
 		/full/path/updated_bg_source.tsv
   
+Running script:
+
 ```
     ./pv_data_merging.py \
      --input_file_list $DATA_DIR/input_files_updatedAF2_biogrid.txt \
@@ -159,34 +167,60 @@ This is sed to generate Venn Diagrms for *AF2, Supp_ppi, and Biogrid datasets*. 
 ```
     ./plot_venn.py --files $DATA_DIR/af2-models-split-ifresid_.tsv $DATA_DIR/suppl_ppi_models_.tsv \
     --key_column interaction_id \
-    --labels AF2 Suppl_ppi \
-    --plot_title "Comparison of AF2 and Suppl" \
-    --output_file $DATA_DIR/venn_af2_suppl.png \
+    --labels AF2 Supp_ppi \
+    --plot_title "Comparison of AF2 and Supp_ppi" \
+    --output_file $DATA_DIR/venn_af2_supp_ppi.png \
     --verbose
 ```
 
-### Compare AF2 and Missing AF2 entries
+### Compare Suppl_ppi and Missing AF2
 
 ```
     ./plot_venn.py --files $DATA_DIR/suppl_ppi_models_.tsv $DATA_DIR/af2_iptm_pdockq.tsv \
     --key_column interaction_id \
-    --labels AF2 Suppl_ppi \
-    --plot_title "Comparison of AF2 and Suppl" \
-    --output_file $DATA_DIR/venn_af2_suppl.png \
+    --labels Suppl_ppi M_AF2 \
+    --plot_title "Comparison of Suppl and M_AF2" \
+    --output_file $DATA_DIR/venn_suppl_mAF2.png \
     --verbose
 ```
     
-### Compare Updated Supp_ppi and AF2 Data
+### Compare Updated Suppl_ppi and AF2
 
 ```
     ./plot_venn.py --files $DATA_DIR/updated_suppl_ppi.tsv $DATA_DIR/af2-models-split-ifresid_.tsv \
     --key_column interaction_id \
-    --labels AF2 Suppl_ppi \
-    --plot_title "Comparison of AF2 and Suppl" \
-    --output_file $DATA_DIR/venn_af2_suppl.png \
+    --labels Updated_Suppl AF2  \
+    --plot_title "Comparison of updated_Suppl and AF2" \
+    --output_file $DATA_DIR/venn_updatedSuppl_AF2.png \
     --verbose
 ```
 **Note:**
-updated_suppl_ppi.tsv: result of combining the following files using *pv_data_merging.py*
+*updated_suppl_ppi.tsv*: result of combining the following files using *pv_data_merging.py*
 - suppl_ppi_models_.tsv
 - af2_iptm_pdockq.tsv
+
+### Compare combined AF2_suppl_ppi and Biogrid
+
+```
+    ./plot_venn.py --files $DATA_DIR/af2_suppl_ppi_combined.tsv $DATA_DIR/updated_bg_source.tsv \
+    --key_column interaction_id \
+    --labels updated_AF2 BG \
+    --plot_title "Comparison of updated_AF2 and Biogrid"" \
+    --output_file $DATA_DIR/venn_updatedAF2_BG.png \
+    --verbose
+```
+**Note:**
+*af2_suppl_ppi_combined.tsv*: result of combining the following files using *pv_data_merging.py*
+- af2-models-split-ifresid_.tsv
+- updated_suppl_ppi.tsv
+
+### Triple comparison: AF2, updated suppl_ppi, and Biogrid
+
+```
+./plot_venn.py --files $DATA_DIR/updated_suppl_ppi.tsv $DATA_DIR/af2-models-split-ifresid_.tsv $DATA_DIR/updated_bg_source.tsv \
+--key_column interaction_id \
+--labels updatedSuppl AF2 BG  \
+--plot_title "Comparison of updated_Suppl_ppi, AF2 and Biogrid" \
+--output_file $DATA_DIR/venn3_af2_suppl_bg.png \
+--verbose
+```
