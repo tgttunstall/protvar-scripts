@@ -114,6 +114,7 @@ Running script:
 
 ### Step 2) Merge files on "interaction_id": File 1 and combined result of (Files 2 and 3)
 ![af2_updated_suppl](https://github.com/user-attachments/assets/4116549a-4085-48be-beed-048b381c4363)
+![venn_updatedSuppl_AF2](https://github.com/user-attachments/assets/3f756c50-85c5-4927-8fa3-4bce3ba4126f)
 
 **Note:** As above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
 
