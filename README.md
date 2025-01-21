@@ -5,7 +5,7 @@
 
 	source pv/bin/activate
 
-	export DATA_DIR=<PATH_TO_DATA DIR>
+	export DATA_DIR=<PATH_TO_DATA DIR> # preferrably without the trailing slash
 
 Install necessary python modules
 
