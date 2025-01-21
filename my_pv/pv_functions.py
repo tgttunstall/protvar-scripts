@@ -695,7 +695,8 @@ def fetch_uniprot_from_db(refseq_id, cursor, verbose = False):
     """
     
     try:
-        query = f"SELECT uniprot_acc FROM uniprot_refseq WHERE refseq_acc = '{refseq_id}'"
+        #query = f"SELECT uniprot_acc FROM uniprot_refseq WHERE refseq_acc = '{refseq_id}'" # exact matches miss NP_061939.3
+        query = f"SELECT uniprot_acc FROM uniprot_refseq WHERE refseq_acc LIKE '{refseq_id}%'"
         cursor.execute(query)
         results = cursor.fetchall()
         if not results:
@@ -703,10 +704,11 @@ def fetch_uniprot_from_db(refseq_id, cursor, verbose = False):
                 print(f"No UniProt ID found for RefSeq ID: {refseq_id}")
             return 'N/A', False, False  # No UniProt ID found
         elif len(results) > 1:
+            selected_id = results[0][0]
             if verbose:
                 print(f"Multiple UniProt IDs found for RefSeq ID: {refseq_id}, selecting the first one.")
                 print(f"UniProt ID selected: {results[0][0]}")  # Log the UniProt ID that was selected
-            return results[0][0], True, False  # Multiple UniProt IDs found, selecting the first one
+            return selected_id, True, False  # Multiple UniProt IDs found, selecting the first one
         if verbose:
             print(f"UniProt ID found and selected: {results[0][0]}")  # Log the successful UniProt ID fetch
         
@@ -721,8 +723,6 @@ def fetch_uniprot_from_db(refseq_id, cursor, verbose = False):
 # Function: 
 ############
 def process_biogrid_file(input_file, db_params):
-    """Processes the BioGRID TSV file to update missing UniProt IDs using a PostgreSQL database with debug info."""
-    
     """
     Processes a BioGRID TSV file to update missing UniProt IDs based on corresponding RefSeq IDs
     using a PostgreSQL database. It also collects debug information for each row processed.
