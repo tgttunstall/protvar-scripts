@@ -111,7 +111,7 @@ def run_stage2(input_file, output_file, config_path, verbose):
     #OPTIONAL: you can write out the tracking dict
     dirname, fname = os.path.split(output_file)
     tracking_filename = os.path.join(dirname, os.path.splitext(fname)[0] + '_tracking_info_db.tsv')
-    print("Writing tracking dict t: {tracking_filename}")
+    print("fWriting tracking dict to {tracking_filename}")
           
     write_nested_dict(data = tracking_dict, 
                        output_file = tracking_filename,
