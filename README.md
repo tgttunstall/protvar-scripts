@@ -136,7 +136,7 @@ Running script:
 *ELAPSED TIME: 62.67 seconds*
 
 ### Step 3) FINAL MERGE: Merge files on "interaction_id": (combined result of Files 2, 3 and 1) and File 4
-![venn_updatedAF2_BG](https://github.com/user-attachments/assets/27b0a448-d867-4810-a3b7-37bd4e046486)
+![venn_updatedAF2_BG](https://github.com/user-attachments/assets/e2d62f7f-2a90-40b4-9d46-0484d6bcbf6f)
 
 **Note:** Similarly, as above, `--input_file_list` must be a file containing a list of files (with full paths) to concatenate/merge.
  
