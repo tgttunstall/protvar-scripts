@@ -111,7 +111,7 @@ def run_stage2(input_file, output_file, config_path, verbose):
     #OPTIONAL: you can write out the tracking dict
     dirname, fname = os.path.split(output_file)
     tracking_filename = os.path.join(dirname, os.path.splitext(fname)[0] + '_tracking_info_db.tsv')
-    print("fWriting tracking dict to {tracking_filename}")
+    print(f"Writing tracking dict to {tracking_filename}")
           
     write_nested_dict(data = tracking_dict, 
                        output_file = tracking_filename,
@@ -124,7 +124,7 @@ def run_stage2(input_file, output_file, config_path, verbose):
         print(f"Input file: {input_file}")
         print(f"Output file: {output_file}")
         elapsed = time.time() - start_time
-        print(f"Stage 2 completed in {elapsed:.2f} seconds. Data is updated and written to {output_file}")
+        print(f"Stage 2 completed in {elapsed:.2f} seconds. \nData is updated and written to {output_file}")
 
 def run_stage3(input_file, output_file, verbose, write_counts):
     start_time = time.time()
