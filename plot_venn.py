@@ -124,7 +124,7 @@ def main():
         print(f"\nVenn diagram saved to {args.output_file}")
     
     if args.verbose:
-        print(f"\nVenn diagram successfully generated. Total elapsed time: {time() - start_time:.2f} seconds.")
+        print(f"\nVenn diagram successfully generated. Total elapsed time: {time.time() - start_time:.2f} seconds.")
 
 if __name__ == '__main__':
     main()
