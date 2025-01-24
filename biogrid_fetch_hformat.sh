@@ -89,6 +89,7 @@ else
 fi
 
 # Processing Header
+echo "No. of lines in unzipped file: $(wc -l ${DATA_FILE})"
 echo "Modifying header: removing '#' and replacing 'whitespace' with '_'"
 time_cmd sed -E '1s/^#//; 1s/ /_/g; 1q' "${DATA_FILE}" > "${OUTPUT_FILE}" || { echo "Header modification failed" >&2; exit 1; }
 
@@ -97,6 +98,7 @@ echo "Extracting human interactions i.e. taxid:9606..."
 time_cmd awk -F'\t' '($10 ~ /taxid:9606/ || $11 ~ /taxid:9606/)' "${DATA_FILE}" >> "${OUTPUT_FILE}" || { echo "Extraction of human interactions failed" >&2; exit 1; }
 
 echo "Results saved in ${OUTPUT_FILE}"
+echo "No. of lines post extraction: $(wc -l ${OUTPUT_FILE})"
 echo "=================================================================="
 # Clean up 
 # Define allowed extensions
