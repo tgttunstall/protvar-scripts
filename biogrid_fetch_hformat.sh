@@ -8,7 +8,7 @@
     # 3. Modifies the header to remove '#' and replace whitespace with '_'
     # 4. Extracts data related to human interactions i.e. taxid: 9606 from fields 10 and 11
         # so extracting either fields with taxid:9606
-    # 5. Cleans up temporary files based on specified options
+    # 5. Cleans up files based on specified options
 
 # Override defaults using args
 # Usage: ./script_name.sh -u <URL> -f <FILE> -o <OUTPUT_FILE> [--clean[=ext1,ext2,...]] [--force] [--time]
