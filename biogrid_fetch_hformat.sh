@@ -4,43 +4,65 @@
 # Script to process BioGRID data file for human interactions
     # 1. Downloads the current release from: https://downloads.thebiogrid.org/File/BioGRID/Release-Archive/BIOGRID-4.4.240/BIOGRID-ALL-4.4.240.mitab.zip
 
-    # 2. Modifies the header to replace whitespace with underscore
-    # 3. Extracts data related to human interactions i.e. taxid: 9606
+    # 2. Modifies the header to remove '#' and replace whitespace with '_'
+    # 3. Extracts data related to human interactions i.e. taxid: 9606 in fields 10 and 11
+        # so extracting either fields with taxid:9606
 
 # Override defaults using args
-# Usage: ./script_name.sh -u <URL> -z <FILE> -o <OUTPUT_FILE>
+# Usage: ./script_name.sh -u <URL> -f <FILE> -o <OUTPUT_FILE>
 ########################################################################
 URL='https://downloads.thebiogrid.org/Download/BioGRID/Release-Archive/BIOGRID-4.4.240'
 FILE='BIOGRID-ALL-4.4.240.mitab.zip'
 OUTPUT_FILE='biogrid_human_interactions.txt'
 
 
-while getopts u:z:o: flag
+while getopts u:f:o: flag
 do
     case "${flag}" in
         u) URL=${OPTARG};;
-        z) FILE=${OPTARG};;
+        f) FILE=${OPTARG};;
         o) OUTPUT_FILE=${OPTARG};;
         *) echo "Invalid option"; exit 1;;
     esac
 done
 
-DATA_FILE=$(basename -s .zip ${FILE}).txt
-
+# Check if required arguments are provided
+# -z to test if a variable is empty
 if [ -z "${URL}" ] || [ -z "${FILE}" ] || [ -z "${OUTPUT_FILE}" ]; then
-    echo "Usage: $0 -u <URL> -z <FILE> -o <OUTPUT_FILE>"
+    echo "Usage: $0 -u <URL> -f <FILE> -o <OUTPUT_FILE>" >&2
     exit 1
 fi
 
+DATA_FILE=$(basename -s .zip ${FILE}).txt
+
 echo "Downloading BioGRID data from ${URL}/${FILE}"
-wget -c "${URL}/${FILE}"
+#wget -c "${URL}/${FILE}"
+if ! wget -c "${URL}/${FILE}"; then
+    echo "Download failed" >&2
+    exit 1
+fi
 
 echo "Unzipping ${FILE}..."
-unzip -o "${FILE}"
+#unzip -o "${FILE}"
+if ! unzip -o "${FILE}"; then
+    echo "Unzip failed" >&2
+    exit 1
+fi
 
-echo "Modifying header and extracting human interactions..."
-head -1 "${DATA_FILE}" | sed -E 's/ /_/g; s/#//g' > "${OUTPUT_FILE}"
-awk -F'\t' '($10 ~ /taxid:9606/ || $11 ~ /taxid:9606/)' "${DATA_FILE}" >> "${OUTPUT_FILE}"
+echo "Modifying header: removing '#' and replacing 'whitespace' with '_'"  
+#head -1 "${DATA_FILE}" | sed -E 's/ /_/g; s/#//g' > "${OUTPUT_FILE}" 
+#sed -E '1s/^#//; 1s/ /_/g' "${DATA_FILE}" > "${OUTPUT_FILE}"
+if ! sed -E '1s/^#//; 1s/ /_/g' "${DATA_FILE}" > "${OUTPUT_FILE}"; then
+    echo "Header modification failed" >&2
+    exit 1
+fi
+
+echo "Extracting human interactions i.e. taxid:9606..."
+#awk -F'\t' '($10 ~ /taxid:9606/ || $11 ~ /taxid:9606/)' "${DATA_FILE}" >> "${OUTPUT_FILE}"
+if ! awk -F'\t' '($10 ~ /taxid:9606/ || $11 ~ /taxid:9606/)' "${DATA_FILE}" >> "${OUTPUT_FILE}"; then
+    echo "Extraction of human interactions failed" >&2
+    exit 1
+fi
 
 echo "Results saved in ${OUTPUT_FILE}"
 echo "Cleaning up..."
