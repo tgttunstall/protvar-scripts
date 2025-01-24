@@ -124,5 +124,3 @@ if [ "$CLEAN" = true ]; then
 else
     echo "No cleanup performed. Use --clean option to remove input files."
 fi
-
-
