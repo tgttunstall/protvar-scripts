@@ -2,7 +2,7 @@
 
 ########################################################################
 # Script to process BioGRID data file for human interactions
-    # 1. Downloads the current release from: https://downloads.thebiogrid.org/File/BioGRID/Release-Archive/BIOGRID-4.4.240/BIOGRID-ALL-4.4.240.mitab.zip
+    # 1. Downloads the current release from: https://downloads.thebiogrid.org/File/BioGRID/Release-Archive/
 
     # 2. Unzips the downloaded file
     # 3. Modifies the header to remove '#' and replace whitespace with '_'
@@ -25,9 +25,9 @@
 #   ./script_name.sh -u https://example.com/data.zip -f data.zip -o output.txt --clean=zip,txt --force --time
 
 ########################################################################
-URL='https://downloads.thebiogrid.org/Download/BioGRID/Release-Archive/BIOGRID-4.4.240'
-FILE='BIOGRID-ALL-4.4.240.mitab.zip'
-OUTPUT_FILE='biogrid_human_interactions.txt'
+#URL='https://downloads.thebiogrid.org/Download/BioGRID/Release-Archive/BIOGRID-4.4.240'
+#FILE='BIOGRID-ALL-4.4.240.mitab.zip'
+#OUTPUT_FILE='biogrid_human_interactions.txt'
 
 CLEAN=false
 FORCE=false

@@ -23,9 +23,9 @@ At each step, an input file is read and output file is generated, which then act
 All paths must be changed to whatever your system is using. Fully-qualified paths are preferred. If you are copy/paste-ing the examples from this README, ensure you set DATA_DIR appropriately!
 
 ## Step 1. Download data from Biogrid and extract human related interactions and format header.
-Comment: output file created named "biogrid_human_interactions.txt" which has no spaces in header
+Comment: output file created named "biogrid_human_interactions.txt" which has no spaces in header.
 ```
-./biogrid_fetch_hformat.sh
+./biogrid_fetch_hformat.sh -u https://downloads.thebiogrid.org/Download/BioGRID/Release-Archive/BIOGRID-4.4.240 -f BIOGRID-ALL-4.4.240.mitab.zip -o biogrid_human_interactions.txt --time
 ```
 
 ### Step 2. BG data processing (Stage 1)
